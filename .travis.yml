@@ -11,6 +11,8 @@ install:
 
 before_script:
     - mkdir build
-    - 'cd build &&  cmake .. && make'
+    - cd build
+    - cmake ..
+    - make
 script:
-    - 'cd build && make test'
+    - make test
