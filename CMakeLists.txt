@@ -9,10 +9,10 @@ find_package(Protobuf REQUIRED)
 
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(CompilerConfig)
 include(GoogleTest)
 include(ProjectHelper)
 
-set(CMAKE_CXX_FLAGS_RELEASE "--std=c++11")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
