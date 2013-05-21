@@ -4,6 +4,12 @@ compiler:
     - clang
     - gcc
 
+notifications:
+    email:
+        on_failure: always
+        on_success: always  # XXX For experimentation, set to "change" later
+
+
 before_install:
     - sudo apt-get install cmake
 install:
