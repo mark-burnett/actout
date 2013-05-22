@@ -1,4 +1,5 @@
 #include "interactions/Ping.hpp"
+#include "messages.hpp"
 #include "requests.pb.h"
 #include "responses.pb.h"
 
@@ -7,11 +8,8 @@
 TEST(Ping, Basic) {
     interaction::Ping p = interaction::Ping();
 
-    auto request = new requests::Ping();
-    auto response = p.execute(request);
+    auto request = MessagePtr(new requests::Ping());
+    auto response = p.execute(request.get());
 
     ASSERT_EQ(response->GetDescriptor(), responses::Pong::descriptor());
-
-    delete request;
-    delete response;
 }

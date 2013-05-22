@@ -8,8 +8,8 @@ namespace interaction {
 
 class Ping: public IInteraction {
     public:
-        google::protobuf::Message* execute(
-                    google::protobuf::Message* request) const;
+        return_type execute(
+                    google::protobuf::Message const* request) const;
 };
 
 } // namespace interaction

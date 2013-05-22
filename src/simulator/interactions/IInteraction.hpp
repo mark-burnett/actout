@@ -1,13 +1,17 @@
 #pragma once
 
+#include "messages.hpp"
+
 #include <google/protobuf/message.h>
 
 namespace interaction {
 
 class IInteraction {
     public:
-        virtual google::protobuf::Message* execute(
-                    google::protobuf::Message* request) const = 0;
+        typedef MessagePtr return_type;
+
+        virtual return_type execute(
+                    google::protobuf::Message const* request) const = 0;
 };
 
 } // namespace interaction

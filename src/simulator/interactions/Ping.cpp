@@ -7,12 +7,11 @@
 
 namespace interaction {
 
-google::protobuf::Message*
-Ping::execute(google::protobuf::Message* request) const {
-    assert(request->GetDescriptor() ==
-           requests::Ping::descriptor());
+Ping::return_type
+Ping::execute(google::protobuf::Message const* request) const {
+    assert(request->GetDescriptor() == requests::Ping::descriptor());
 
-    return new responses::Pong();
+    return Ping::return_type(new responses::Pong());
 };
 
 } // namespace interaction
