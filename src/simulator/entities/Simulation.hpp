@@ -1,9 +1,11 @@
 #pragma once
 
 #include "entities/IEndCondition.hpp"
+#include "entities/IEvent.hpp"
 #include "entities/IEventGenerator.hpp"
 #include "entities/IRNG.hpp"
 #include "entities/SimulationState.hpp"
+
 #include <memory>
 #include <vector>
 
@@ -29,7 +31,16 @@ class Simulation {
             event_generators_(event_generators) {};
 
         std::unique_ptr<SimulationState const> execute(
-                SimulationState const* state) const;
+                SimulationState const* initial_state);
+
+    private:
+        double calculate_total_event_rate(SimulationState const* state,
+                double const& time,
+                std::vector<std::unique_ptr<IStateComponent const> > const&
+                    modified_state_components) const;
+        std::unique_ptr<IEvent const> next_event(SimulationState const* state,
+                double const& r, double const& total_event_rate) const;
+        void reset();
 };
 
 } // namespace entities
