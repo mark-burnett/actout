@@ -15,6 +15,12 @@ set(PROTO_SOURCES
 PROTOBUF_GENERATE_CPP(PROTO_SOURCES PROTO_HEADERS ${PROTO_SOURCES})
 
 set(SOURCES
+    entities/IEvent.hpp
+    entities/IEventGenerator.hpp
+    entities/Simulation.cpp
+    entities/Simulation.hpp
+    entities/SimulationState.hpp
+
     interactions/CreateSimulation.cpp
     interactions/CreateSimulation.hpp
     interactions/IInteraction.hpp
