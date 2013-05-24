@@ -2,3 +2,6 @@ package requests;
 
 message Ping {
 }
+
+message CreateSimulation {
+}

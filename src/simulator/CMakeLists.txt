@@ -15,6 +15,8 @@ set(PROTO_SOURCES
 PROTOBUF_GENERATE_CPP(PROTO_SOURCES PROTO_HEADERS ${PROTO_SOURCES})
 
 set(SOURCES
+    interactions/CreateSimulation.cpp
+    interactions/CreateSimulation.hpp
     interactions/IInteraction.hpp
     interactions/Ping.cpp
     interactions/Ping.hpp
