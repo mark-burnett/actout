@@ -6,13 +6,13 @@
 namespace interaction {
 
 class IInteraction {
-    public:
-        typedef MessagePtr return_type;
+public:
+    typedef MessagePtr return_type;
 
-        virtual ~IInteraction() {}
+    virtual ~IInteraction() {}
 
-        virtual return_type execute(
-                    google::protobuf::Message const* request) const = 0;
+    virtual return_type execute(
+                google::protobuf::Message const* request) const = 0;
 };
 
 } // namespace interaction

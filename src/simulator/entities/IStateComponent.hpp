@@ -3,8 +3,8 @@
 namespace entities {
 
 class IStateComponent {
-    public:
-        virtual ~IStateComponent() {}
+public:
+    virtual ~IStateComponent() {}
 };
 
 } // namespace entities

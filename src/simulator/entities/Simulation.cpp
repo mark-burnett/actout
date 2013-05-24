@@ -47,6 +47,7 @@ Simulation::execute(SimulationState const* initial_state) {
     return std::unique_ptr<SimulationState const>(new SimulationState());
 }
 
+
 double
 Simulation::calculate_total_event_rate(SimulationState const* state, double const& time,
         std::vector<std::unique_ptr<IStateComponent const> > const&
@@ -54,11 +55,13 @@ Simulation::calculate_total_event_rate(SimulationState const* state, double cons
     return double();
 }
 
+
 std::unique_ptr<IEvent const>
 Simulation::next_event(SimulationState const* state,
         double const& r, double const& total_event_rate) const {
     return std::unique_ptr<IEvent const>();
 }
+
 
 void
 Simulation::reset() {

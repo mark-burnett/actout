@@ -8,11 +8,11 @@
 namespace entities {
 
 class IEvent {
-    public:
-        virtual ~IEvent() {}
+public:
+    virtual ~IEvent() {}
 
-        virtual std::vector<std::unique_ptr<IStateComponent const> >
-            apply(SimulationState const* state) const = 0;
+    virtual std::vector<std::unique_ptr<IStateComponent const> >
+        apply(SimulationState const* state) const = 0;
 };
 
 } // namespace entities
