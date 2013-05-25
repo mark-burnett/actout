@@ -72,6 +72,11 @@ Simulation::next_event(SimulationState const* state,
 
 void
 Simulation::reset() {
+    rng_->reset();
+    for (auto i = event_generators_->begin();
+            i != event_generators_->end(); ++i) {
+        i->reset();
+    }
 }
 
 } // namespace entities
