@@ -28,18 +28,25 @@ Simulation::execute(SimulationState const* initial_state) {
     std::vector<std::unique_ptr<IStateComponent const> >
         modified_state_components;
 
-    while (std::none_of(end_conditions_->cbegin(), end_conditions_->cend(),
-                std::bind(&IEndCondition::satisfied,
-                    _1, state.get(), time, event_count))) {
+    while (true) {
         double total_event_rate = calculate_total_event_rate(state.get(),
                 time, modified_state_components);
+
+        double dt = rng_->exponential(total_event_rate);
+
+        // measure!
+
+        if (std::any_of(end_conditions_->cbegin(), end_conditions_->cend(),
+                std::bind(&IEndCondition::satisfied,
+                    _1, state.get(), time, event_count))) {
+            break;
+        }
 
         double r = rng_->uniform(0, total_event_rate);
         auto event = next_event(state.get(), r, total_event_rate);
 
         modified_state_components = event->apply(state.get());
 
-        double dt = rng_->exponential(total_event_rate);
         time += dt;
         event_count++;
     }
