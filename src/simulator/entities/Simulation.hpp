@@ -30,8 +30,8 @@ public:
         end_conditions_(end_conditions),
         event_generators_(event_generators) {};
 
-    std::unique_ptr<SimulationState const> execute(
-            SimulationState const* initial_state);
+    std::unique_ptr<SimulationState> execute(
+            std::unique_ptr<SimulationState>& state);
 
 private:
     double calculate_total_event_rate(SimulationState const* state,

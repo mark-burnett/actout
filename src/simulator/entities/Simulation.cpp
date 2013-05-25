@@ -14,13 +14,10 @@ using namespace std::placeholders;
 
 namespace entities {
 
-std::unique_ptr<SimulationState const>
-Simulation::execute(SimulationState const* initial_state) {
+std::unique_ptr<SimulationState>
+Simulation::execute(std::unique_ptr<SimulationState>& state) {
     std::size_t event_count = 0;
     double time = 0;
-
-    auto state = std::unique_ptr<SimulationState>(
-            new SimulationState(*initial_state));
 
     reset();
 
@@ -51,7 +48,7 @@ Simulation::execute(SimulationState const* initial_state) {
         event_count++;
     }
 
-    return std::unique_ptr<SimulationState const>(new SimulationState());
+    return std::unique_ptr<SimulationState>(new SimulationState());
 }
 
 
