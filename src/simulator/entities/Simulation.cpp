@@ -5,7 +5,6 @@
 #include "entities/SimulationState.hpp"
 
 #include <algorithm>
-#include <cstddef>
 #include <functional>
 #include <memory>
 #include <string>
@@ -16,9 +15,6 @@ namespace entities {
 
 std::unique_ptr<SimulationState>
 Simulation::execute(std::unique_ptr<SimulationState>& state) {
-    std::size_t event_count = 0;
-    double time = 0;
-
     reset();
 
     std::unique_ptr<IEvent const> previous_event;
@@ -26,26 +22,25 @@ Simulation::execute(std::unique_ptr<SimulationState>& state) {
         modified_state_components;
 
     while (true) {
-        double total_event_rate = calculate_total_event_rate(state.get(),
-                time, modified_state_components);
+        state->total_event_rate = calculate_total_event_rate(
+                state.get(), modified_state_components);
 
-        double dt = rng_->exponential(total_event_rate);
+        double dt = rng_->exponential(state->total_event_rate);
 
         // measure!
 
         if (std::any_of(end_conditions_->cbegin(), end_conditions_->cend(),
-                std::bind(&IEndCondition::satisfied,
-                    _1, state.get(), time, event_count))) {
+                std::bind(&IEndCondition::satisfied, _1, state.get()))) {
             break;
         }
 
-        double r = rng_->uniform(0, total_event_rate);
-        auto event = next_event(state.get(), r, total_event_rate);
+        double r = rng_->uniform(0, state->total_event_rate);
+        auto event = next_event(state.get(), r, state->total_event_rate);
 
         modified_state_components = event->apply(state.get());
 
-        time += dt;
-        event_count++;
+        state->time += dt;
+        state->event_count++;
     }
 
     return std::unique_ptr<SimulationState>(new SimulationState());
@@ -53,7 +48,7 @@ Simulation::execute(std::unique_ptr<SimulationState>& state) {
 
 
 double
-Simulation::calculate_total_event_rate(SimulationState const* state, double const& time,
+Simulation::calculate_total_event_rate(SimulationState const* state,
         std::vector<std::unique_ptr<IStateComponent const> > const&
             modified_state_components) const {
     return double();

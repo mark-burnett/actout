@@ -35,7 +35,6 @@ public:
 
 private:
     double calculate_total_event_rate(SimulationState const* state,
-            double const& time,
             std::vector<std::unique_ptr<IStateComponent const> > const&
                 modified_state_components) const;
     std::unique_ptr<IEvent const> next_event(SimulationState const* state,
