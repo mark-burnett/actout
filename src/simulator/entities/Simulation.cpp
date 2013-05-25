@@ -47,8 +47,14 @@ Simulation::execute(std::unique_ptr<SimulationState>& state) {
 double
 Simulation::calculate_total_event_rate(SimulationState const* state,
         std::vector<std::unique_ptr<IStateComponent const> > const&
-            modified_state_components) const {
-    return double();
+            modified_state_components) {
+    double R = 0;
+    for (auto g = event_generators_->begin();
+            g != event_generators_->end(); ++g) {
+        R += (*g)->rate(state, modified_state_components);
+    }
+
+    return R;
 }
 
 

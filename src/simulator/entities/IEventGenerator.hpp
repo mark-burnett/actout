@@ -10,12 +10,13 @@ class IEventGenerator {
 public:
     virtual ~IEventGenerator() {}
 
-    virtual double rate(SimulationState const* state, double const& time,
-                IEvent const* previous_event) = 0;
+    virtual double rate(SimulationState const* state,
+            std::vector<std::unique_ptr<IStateComponent const> > const&
+                modified_state_components) = 0;
 
     virtual std::unique_ptr<IEvent const> create_event(
-                SimulationState const* state, double const& time,
-                double const& random_number) const = 0;
+            SimulationState const* state,
+            double const& random_number) const = 0;
 };
 
 } // namespace entities

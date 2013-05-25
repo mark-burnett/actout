@@ -16,7 +16,7 @@ private:
     typedef std::vector<
         std::unique_ptr<IEndCondition const> > ec_container;
     typedef std::vector<
-        std::unique_ptr<IEventGenerator const> > eg_container;
+        std::unique_ptr<IEventGenerator> > eg_container;
 
     std::unique_ptr<IRNG>& rng_;
     std::unique_ptr<ec_container>& end_conditions_;
@@ -36,7 +36,7 @@ public:
 private:
     double calculate_total_event_rate(SimulationState const* state,
             std::vector<std::unique_ptr<IStateComponent const> > const&
-                modified_state_components) const;
+                modified_state_components);
     std::unique_ptr<IEvent const> next_event(SimulationState const* state,
             double const& r, double const& total_event_rate) const;
     void reset();
