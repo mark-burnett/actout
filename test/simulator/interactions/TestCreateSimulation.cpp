@@ -11,5 +11,5 @@ TEST(CreateSimulation, Basic) {
     auto request = MessagePtr(new requests::CreateSimulation());
     auto response = p.execute(request.get());
 
-    ASSERT_EQ(response->GetDescriptor(), responses::Pong::descriptor());
+    ASSERT_EQ(response->GetDescriptor(), responses::OK::descriptor());
 }
