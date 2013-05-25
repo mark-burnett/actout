@@ -16,8 +16,6 @@ public:
     virtual std::unique_ptr<IEvent const> create_event(
                 SimulationState const* state, double const& time,
                 double const& random_number) const = 0;
-
-    virtual void reset() = 0;
 };
 
 } // namespace entities

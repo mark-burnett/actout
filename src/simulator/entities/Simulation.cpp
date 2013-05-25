@@ -15,8 +15,6 @@ namespace entities {
 
 std::unique_ptr<SimulationState>
 Simulation::execute(std::unique_ptr<SimulationState>& state) {
-    reset();
-
     std::unique_ptr<IEvent const> previous_event;
     std::vector<std::unique_ptr<IStateComponent const> >
         modified_state_components;
@@ -59,16 +57,6 @@ std::unique_ptr<IEvent const>
 Simulation::next_event(SimulationState const* state,
         double const& r, double const& total_event_rate) const {
     return std::unique_ptr<IEvent const>();
-}
-
-
-void
-Simulation::reset() {
-    rng_->reset();
-    for (auto i = event_generators_->begin();
-            i != event_generators_->end(); ++i) {
-        i->reset();
-    }
 }
 
 } // namespace entities
