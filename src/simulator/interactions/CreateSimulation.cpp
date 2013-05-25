@@ -13,6 +13,6 @@ CreateSimulation::execute(google::protobuf::Message const* request) const {
         request->GetDescriptor() == requests::CreateSimulation::descriptor());
 
     return CreateSimulation::return_type(new responses::OK());
-};
+}
 
 } // namespace interaction
