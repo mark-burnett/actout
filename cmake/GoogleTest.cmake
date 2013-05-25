@@ -1,7 +1,7 @@
 # --- Utility ---
 macro(def_test testName)
     add_executable(Test${testName} Test${testName}.cpp ${COMMON_SOURCES})
-    target_link_libraries(Test${testName} ${TEST_LIBS} ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(Test${testName} ${TEST_LIBS} ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
     if($ENV{UNIT_TEST_VALGRIND})
         add_test(NAME Test${testName} COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:Test${testName}>)
     else()
@@ -12,6 +12,7 @@ macro(def_test testName)
 endmacro(def_test testName)
 
 # --- Setup Google Test ---
+find_package(Threads)
 find_package(GTest)
 
 if(NOT GTEST_FOUND)
