@@ -14,7 +14,6 @@ namespace entities {
 
 std::unique_ptr<SimulationState>
 Simulation::execute(std::unique_ptr<SimulationState>& state) {
-    std::unique_ptr<IEvent const> previous_event;
     std::vector<std::unique_ptr<IStateComponent const> >
         modified_state_components;
 
