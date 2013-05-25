@@ -11,7 +11,7 @@ implemented efficiently, using the Gillespie algorithm.
 
 - CMake
 - Google Protocol Buffers
-- Google Test (currently installed automatically)
+- Google Test
 
 ### Building the project
 
