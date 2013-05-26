@@ -79,12 +79,17 @@ TEST(Simulation, MinimalSimulation) {
     ASSERT_EQ(0, rng->uniform_call_count);
 }
 
-TEST(Simulation, SingleEventSimulation) {
+class EventSimulation : public ::testing::TestWithParam<int> {};
+
+TEST_P(EventSimulation, NOPEventSimulation) {
+    uint64_t num_events = GetParam();
+
     auto rng = std::unique_ptr<MockRNG>(new MockRNG);
 
     std::vector<std::unique_ptr<IEndCondition const> > ecs;
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
-    auto eg = std::unique_ptr<MockEventGenerator>(new MockEventGenerator(1));
+    auto eg = std::unique_ptr<MockEventGenerator>(
+            new MockEventGenerator(num_events));
     auto eg_ptr = eg.get();
     event_generators.push_back(std::move(eg));
 
@@ -95,12 +100,15 @@ TEST(Simulation, SingleEventSimulation) {
 
     s.execute(state.get(), measurements, rng.get());
 
-    ASSERT_EQ(1, state->event_count);
-    ASSERT_EQ(2, state->time);
+    ASSERT_EQ(num_events, state->event_count);
+    ASSERT_EQ(num_events + 1, state->time);
     ASSERT_EQ(0, state->total_event_rate);
 
-    ASSERT_EQ(2, rng->exponential_call_count);
-    ASSERT_EQ(1, rng->uniform_call_count);
+    ASSERT_EQ(num_events + 1, rng->exponential_call_count);
+    ASSERT_EQ(num_events, rng->uniform_call_count);
 
-    ASSERT_EQ(1, eg_ptr->event_count);
+    ASSERT_EQ(num_events, eg_ptr->event_count);
 }
+
+INSTANTIATE_TEST_CASE_P(RangeEventSimulation, EventSimulation,
+        ::testing::Range(1, 6));
