@@ -58,7 +58,7 @@ public:
     }
 };
 
-TEST(Simulation, MinimalSimulation) {
+TEST(MinimalSimulation, execute) {
     auto rng = std::unique_ptr<MockRNG>(new MockRNG);
 
     std::vector<std::unique_ptr<IEndCondition const> > ecs;
@@ -79,9 +79,10 @@ TEST(Simulation, MinimalSimulation) {
     ASSERT_EQ(0, rng->uniform_call_count);
 }
 
-class EventSimulation : public ::testing::TestWithParam<int> {};
 
-TEST_P(EventSimulation, NOPEventSimulation) {
+class NOPEventSimulation : public ::testing::TestWithParam<int> {};
+
+TEST_P(NOPEventSimulation, execute) {
     uint64_t num_events = GetParam();
 
     auto rng = std::unique_ptr<MockRNG>(new MockRNG);
@@ -110,5 +111,5 @@ TEST_P(EventSimulation, NOPEventSimulation) {
     ASSERT_EQ(num_events, eg_ptr->event_count);
 }
 
-INSTANTIATE_TEST_CASE_P(RangeEventSimulation, EventSimulation,
+INSTANTIATE_TEST_CASE_P(RangeNOPSimulation, NOPEventSimulation,
         ::testing::Range(0, 5));
