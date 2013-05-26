@@ -20,3 +20,4 @@ enable_testing(true)
 
 add_projects(src)
 add_projects(test)
+add_subdirectory(doc)
