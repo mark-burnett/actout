@@ -8,8 +8,7 @@ class IMeasurement {
 public:
     virtual ~IMeasurement() {}
 
-    virtual void perform(SimulationState const* state,
-                double const& next_event_time) = 0;
+    virtual void perform(SimulationState const* state) = 0;
 };
 
 } // namespace entities

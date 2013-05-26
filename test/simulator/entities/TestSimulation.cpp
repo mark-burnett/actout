@@ -9,23 +9,35 @@
 #include "entities/end_conditions/EventCount.hpp"
 
 #include <gtest/gtest.h>
+#include <inttypes.h>
 
 using namespace entities;
 
 
 class MockRNG : public IRNG {
-    double exponential(double const& denominator) { return 1.0; }
-    double uniform(double const& min=0, double const& max=1) { return (min + max) / 2; }
+public:
+    uint64_t exponential_call_count;
+    uint64_t uniform_call_count;
+
+    MockRNG()
+        : exponential_call_count(0),
+        uniform_call_count(0) {}
+
+    double exponential(double const& denominator) {
+        ++exponential_call_count;
+        return 1;
+    }
+    double uniform(double const& min=0, double const& max=1) {
+        ++uniform_call_count;
+        return (min + max) / 2;
+    }
 };
 
 
-TEST(Simulation, EmptySimulation) {
-    auto rng = std::unique_ptr<IRNG>(new MockRNG);
+TEST(Simulation, MinimalSimulation) {
+    auto rng = std::unique_ptr<MockRNG>(new MockRNG);
 
     std::vector<std::unique_ptr<IEndCondition const> > ecs;
-    auto ec = std::unique_ptr<IEndCondition const>(
-            new end_conditions::EventCount(0));
-    ecs.push_back(std::move(ec));
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
 
     auto state = std::unique_ptr<SimulationState>(new SimulationState());
@@ -35,6 +47,10 @@ TEST(Simulation, EmptySimulation) {
 
     s.execute(state.get(), measurements, rng.get());
 
-    ASSERT_EQ(state->event_count, 0);
-    ASSERT_EQ(state->time, 0);
+    ASSERT_EQ(0, state->event_count);
+    ASSERT_EQ(1, state->time);
+    ASSERT_EQ(0, state->total_event_rate);
+
+    ASSERT_EQ(1, rng->exponential_call_count);
+    ASSERT_EQ(0, rng->uniform_call_count);
 }

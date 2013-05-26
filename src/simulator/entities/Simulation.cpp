@@ -18,34 +18,38 @@ namespace entities {
 void
 Simulation::execute(SimulationState* state,
         std::vector<std::unique_ptr<IMeasurement> >& measurements, IRNG* rng) {
-    std::vector<std::unique_ptr<IStateComponent const> >
-        modified_state_components;
+    std::vector<StateModificationDescriptor> state_component_modifications;
 
     while (true) {
         auto accumulated_rates = calculate_accumulated_rates(
-                state, modified_state_components);
+                state, state_component_modifications);
         if (accumulated_rates.empty()) {
             state->total_event_rate = 0;
         } else {
             state->total_event_rate = accumulated_rates.back();
         }
 
-        double next_event_time = state->time
-            + rng->exponential(state->total_event_rate);
+        // Note that updating the state time here makes all measurements
+        // actually measurements of a particular value in the limit as t ->
+        // state->time from the left.  This is perfectly OK, but should be
+        // explicitly documented.  This is beter than OK, it's more correct.
+        // Values are of all measurements are generally discrete and
+        // discontinuous.
+        state->time += rng->exponential(state->total_event_rate);
 
         for (auto m = measurements.begin(); m != measurements.end(); ++m) {
-            (*m)->perform(state, next_event_time);
+            (*m)->perform(state);
         }
 
-        if (std::any_of(end_conditions_.cbegin(), end_conditions_.cend(),
+        if (0 == state->total_event_rate ||
+            std::any_of(end_conditions_.cbegin(), end_conditions_.cend(),
                 std::bind(&IEndCondition::satisfied, _1, state))) {
             break;
         }
 
         auto event = next_event(state, accumulated_rates, rng);
-        modified_state_components = event->apply(state);
+        state_component_modifications = event->apply(state);
 
-        state->time = next_event_time;
         state->event_count++;
     }
 }
@@ -53,7 +57,7 @@ Simulation::execute(SimulationState* state,
 
 std::vector<double>
 Simulation::calculate_accumulated_rates(SimulationState const* state,
-            std::vector<std::unique_ptr<IStateComponent const> > const&
+            std::vector<StateModificationDescriptor> const&
                 modified_state_components) {
     std::vector<double> accumulated_rates;
     accumulated_rates.reserve(event_generators_.size());

@@ -33,7 +33,7 @@ public:
 private:
     std::vector<double> calculate_accumulated_rates(
             SimulationState const* state,
-            std::vector<std::unique_ptr<IStateComponent const> > const&
+            std::vector<StateModificationDescriptor> const&
                 modified_state_components);
     std::unique_ptr<IEvent const> next_event(SimulationState const* state,
             std::vector<double> const& event_rates, IRNG* rng) const;

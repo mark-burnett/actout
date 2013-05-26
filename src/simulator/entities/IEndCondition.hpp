@@ -1,7 +1,6 @@
 #pragma once
 
 #include "entities/SimulationState.hpp"
-#include <cstddef>
 
 namespace entities {
 
