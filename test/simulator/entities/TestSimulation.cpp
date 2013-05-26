@@ -111,4 +111,4 @@ TEST_P(EventSimulation, NOPEventSimulation) {
 }
 
 INSTANTIATE_TEST_CASE_P(RangeEventSimulation, EventSimulation,
-        ::testing::Range(1, 6));
+        ::testing::Range(0, 5));
