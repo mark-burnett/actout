@@ -7,7 +7,9 @@
 #include "entities/SimulationState.hpp"
 
 #include "entities/end_conditions/EventCount.hpp"
+#include "entities/event_generators/Increment.hpp"
 #include "entities/events/NOP.hpp"
+#include "entities/state_components/UnsignedInteger.hpp"
 
 #include <gtest/gtest.h>
 #include <inttypes.h>
@@ -113,3 +115,40 @@ TEST_P(NOPEventSimulation, execute) {
 
 INSTANTIATE_TEST_CASE_P(RangeNOPSimulation, NOPEventSimulation,
         ::testing::Range(0, 5));
+
+
+TEST(CountingSimulation, single_state_component) {
+    auto rng = std::unique_ptr<MockRNG>(new MockRNG);
+
+    std::vector<std::unique_ptr<IEndCondition const> > ecs;
+    auto ec = std::unique_ptr<end_conditions::EventCount const>(
+            new end_conditions::EventCount(5));
+    ecs.push_back(std::move(ec));
+
+    std::vector<std::unique_ptr<IEventGenerator> > event_generators;
+    auto eg = std::unique_ptr<event_generators::Increment>(
+            new event_generators::Increment("int", 1, 3));
+    event_generators.push_back(std::move(eg));
+
+    auto state = std::unique_ptr<SimulationState>(new SimulationState());
+    auto sc = std::unique_ptr<state_components::UnsignedInteger>(
+            new state_components::UnsignedInteger());
+    auto sc_id = state->add_component(std::move(sc), "int");
+
+    std::vector<std::unique_ptr<IMeasurement> > measurements;
+
+    auto s = Simulation(ecs, event_generators);
+
+    s.execute(state.get(), measurements, rng.get());
+
+    auto end_sc = state->get(sc_id);
+    ASSERT_EQ(15, static_cast<state_components::UnsignedInteger*>(
+                end_sc)->value);
+
+    ASSERT_EQ(5, state->event_count);
+    ASSERT_EQ(6, state->time);
+    ASSERT_EQ(1, state->total_event_rate);
+
+    ASSERT_EQ(6, rng->exponential_call_count);
+    ASSERT_EQ(5, rng->uniform_call_count);
+}

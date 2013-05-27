@@ -13,7 +13,7 @@ namespace events {
 class NOP : public IEvent {
 public:
     std::vector<StateModificationDescriptor>
-        apply(SimulationState const* state) const {
+        apply(SimulationState* state) const {
             return std::vector<StateModificationDescriptor>(); }
 };
 

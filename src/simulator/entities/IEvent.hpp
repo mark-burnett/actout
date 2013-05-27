@@ -11,6 +11,7 @@ namespace entities {
 
 struct StateModificationDescriptor {
     uint64_t component_id;
+    // XXX make this an enum (created, deleted, modified);
     bool deleted;
 };
 
@@ -19,7 +20,7 @@ public:
     virtual ~IEvent() {}
 
     virtual std::vector<StateModificationDescriptor>
-        apply(SimulationState const* state) const = 0;
+        apply(SimulationState* state) const = 0;
 };
 
 } // namespace entities

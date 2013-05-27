@@ -23,18 +23,26 @@ set(SOURCES
     entities/IStateComponent.hpp
     entities/Simulation.cpp
     entities/Simulation.hpp
+    entities/SimulationState.cpp
     entities/SimulationState.hpp
 
     entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
 
+    entities/event_generators/Increment.cpp
+    entities/event_generators/Increment.hpp
+
+    entities/events/Increment.hpp
     entities/events/NOP.hpp
+
+    entities/state_components/UnsignedInteger.hpp
 
     interactions/CreateSimulation.cpp
     interactions/CreateSimulation.hpp
     interactions/IInteraction.hpp
     interactions/Ping.cpp
     interactions/Ping.hpp
+
 
     ${PROTO_HEADERS}
     ${PROTO_SOURCES}
