@@ -15,8 +15,8 @@ filament branching) easier to implement.
 
 After the migration of core code is complete, I will start working on a
 sensible interface and command line utility to enable basic usage.  Once that
-is in place, I will evaluate try to actually use the code for research, see
-what additional needs arise and work from there.
+is in place, I will try to actually use the code for research, see what
+additional needs arise and work from there.
 
 One important goal for this project is to shed the significant cruft associated
 with the old project, so the complex database backend will be left behind
