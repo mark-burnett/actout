@@ -37,8 +37,8 @@ Simulation::execute(SimulationState* state,
         // discontinuous.
         state->time += rng->exponential(state->total_event_rate);
 
-        for (auto m = measurements.begin(); m != measurements.end(); ++m) {
-            (*m)->perform(state);
+        for (auto& m : measurements) {
+            m->perform(state);
         }
 
         if (0 == state->total_event_rate ||
@@ -63,9 +63,8 @@ Simulation::calculate_accumulated_rates(SimulationState const* state,
     accumulated_rates.reserve(event_generators_.size());
 
     double accumulated_rate = 0;
-    for (auto i = event_generators_.begin();
-            i < event_generators_.end(); ++i) {
-         accumulated_rate += (*i)->rate(state, modified_state_components);
+    for (auto& i : event_generators_) {
+         accumulated_rate += i->rate(state, modified_state_components);
          accumulated_rates.push_back(accumulated_rate);
     }
 
