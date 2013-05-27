@@ -83,8 +83,8 @@ Simulation::next_event(SimulationState const* state,
     if (i == accumulated_rates.cend()) {
         return std::unique_ptr<IEvent const>(new events::NOP());
     } else {
-        return event_generators_[i - accumulated_rates.cbegin()]->create_event(
-                state, *i - r);
+        return event_generators_[std::distance(
+                accumulated_rates.cbegin(), i)]->create_event(state, *i - r);
     }
 }
 
