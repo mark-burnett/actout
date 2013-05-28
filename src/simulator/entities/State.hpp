@@ -2,29 +2,30 @@
 
 #include "entities/IConcentration.hpp"
 #include "entities/IFilament.hpp"
+#include "entities/SpeciesMap.hpp"
 
 #include <inttypes.h>
-#include <map>
 #include <memory>
-#include <string>
 #include <vector>
+
 
 using entities::state_components::IConcentration;
 using entities::state_components::IFilament;
 
+
 namespace entities {
+
 
 struct State {
     double time;
     double total_event_rate;
     uint64_t event_count;
 
-    typedef std::vector<std::unique_ptr<IFilament> > filaments_t;
-    filaments_t filaments;
+    SpeciesMap species_map;
 
-    typedef std::map<std::string, std::unique_ptr<IConcentration> >
-            concentrations_t;
-    concentrations_t concentrations;
+    std::vector<std::unique_ptr<IFilament> > filaments;
+    std::vector<std::unique_ptr<IConcentration> > concentrations;
 };
+
 
 } // namespace entities

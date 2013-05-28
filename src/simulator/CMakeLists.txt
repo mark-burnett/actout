@@ -23,12 +23,12 @@ set(SOURCES
     entities/IRNG.hpp
     entities/Simulation.cpp
     entities/Simulation.hpp
+    entities/SpeciesMap.cpp
+    entities/SpeciesMap.hpp
     entities/State.hpp
 
     entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
-
-    entities/events/NOP.hpp
 
     interactions/CreateSimulation.cpp
     interactions/CreateSimulation.hpp
