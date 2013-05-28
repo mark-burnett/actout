@@ -1,7 +1,6 @@
 #pragma once
 
 #include "entities/IEndCondition.hpp"
-#include "entities/IEvent.hpp"
 #include "entities/IEventGenerator.hpp"
 #include "entities/IMeasurement.hpp"
 #include "entities/IRNG.hpp"
@@ -35,8 +34,9 @@ private:
             State const* state,
             std::vector<StateModificationDescriptor> const&
                 modified_state_components);
-    std::unique_ptr<IEvent const> next_event(State const* state,
-            std::vector<double> const& event_rates, IRNG* rng) const;
+    std::vector<StateModificationDescriptor> perform_next_event(
+            State* state, std::vector<double> const& accumulated_rates,
+            IRNG* rng) const;
 };
 
 } // namespace entities

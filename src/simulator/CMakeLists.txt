@@ -17,7 +17,6 @@ PROTOBUF_GENERATE_CPP(PROTO_SOURCES PROTO_HEADERS ${PROTO_DEFINITIONS})
 set(SOURCES
     entities/IConcentration.hpp
     entities/IEndCondition.hpp
-    entities/IEvent.hpp
     entities/IEventGenerator.hpp
     entities/IFilament.hpp
     entities/IMeasurement.hpp

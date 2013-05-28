@@ -1,10 +1,7 @@
 #include "entities/IEndCondition.hpp"
-#include "entities/IEvent.hpp"
 #include "entities/IMeasurement.hpp"
 #include "entities/Simulation.hpp"
 #include "entities/State.hpp"
-
-#include "entities/events/NOP.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -48,10 +45,8 @@ Simulation::execute(State* state,
             break;
         }
 
-        auto event = next_event(state, accumulated_rates, rng);
-        state_component_modifications = event->apply(state);
-
-        state->event_count++;
+        state_component_modifications = perform_next_event(
+                state, accumulated_rates, rng);
     }
 }
 
@@ -73,8 +68,8 @@ Simulation::calculate_accumulated_rates(State const* state,
 }
 
 
-std::unique_ptr<IEvent const>
-Simulation::next_event(State const* state,
+std::vector<StateModificationDescriptor>
+Simulation::perform_next_event(State* state,
         std::vector<double> const& accumulated_rates,
         IRNG* rng) const {
     double r = rng->uniform(0, state->total_event_rate);
@@ -82,10 +77,11 @@ Simulation::next_event(State const* state,
             accumulated_rates.cend(), r);
 
     if (i == accumulated_rates.cend()) {
-        return std::unique_ptr<IEvent const>(new events::NOP());
+        return std::vector<StateModificationDescriptor>();
     } else {
+        state->event_count++;
         return event_generators_[std::distance(
-                accumulated_rates.cbegin(), i)]->create_event(state, *i - r);
+                accumulated_rates.cbegin(), i)]->perform_event(state, *i - r);
     }
 }
 
