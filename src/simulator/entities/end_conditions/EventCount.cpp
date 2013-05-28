@@ -4,7 +4,7 @@ namespace entities {
 namespace end_conditions {
 
 bool
-EventCount::satisfied(SimulationState const* state) const {
+EventCount::satisfied(State const* state) const {
     return (state->event_count >= max_events_);
 }
 

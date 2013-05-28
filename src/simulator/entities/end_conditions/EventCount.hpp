@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entities/IEndCondition.hpp"
-#include "entities/SimulationState.hpp"
+#include "entities/State.hpp"
 
 #include <inttypes.h>
 
@@ -16,7 +16,7 @@ public:
     EventCount(uint64_t max_events)
         : max_events_(max_events) {}
 
-    bool satisfied(SimulationState const* state) const;
+    bool satisfied(State const* state) const;
 };
 
 } // namespace end_conditions

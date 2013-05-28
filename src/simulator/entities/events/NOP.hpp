@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entities/SimulationState.hpp"
+#include "entities/State.hpp"
 #include "entities/IEvent.hpp"
 
 #include <memory>
@@ -12,7 +12,7 @@ namespace events {
 class NOP : public IEvent {
 public:
     std::vector<StateModificationDescriptor>
-        apply(SimulationState* state) const {
+        apply(State* state) const {
             return std::vector<StateModificationDescriptor>(); }
 };
 

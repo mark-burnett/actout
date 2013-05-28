@@ -4,7 +4,7 @@
 #include "entities/IMeasurement.hpp"
 #include "entities/IRNG.hpp"
 #include "entities/Simulation.hpp"
-#include "entities/SimulationState.hpp"
+#include "entities/State.hpp"
 
 #include "entities/end_conditions/EventCount.hpp"
 #include "entities/events/NOP.hpp"
@@ -41,7 +41,7 @@ public:
     MockEventGenerator(uint64_t max_events)
         : max_events_(max_events), event_count(0) {}
 
-    double rate(SimulationState const* state,
+    double rate(State const* state,
             std::vector<StateModificationDescriptor> const&
                 modified_state_components) {
         if (event_count < max_events_) {
@@ -52,7 +52,7 @@ public:
         }
     }
 
-    std::unique_ptr<IEvent const> create_event(SimulationState const* state,
+    std::unique_ptr<IEvent const> create_event(State const* state,
             double const& random_number) const {
         return std::unique_ptr<events::NOP const>(new events::NOP());
     }
@@ -64,7 +64,7 @@ TEST(MinimalSimulation, execute) {
     std::vector<std::unique_ptr<IEndCondition const> > ecs;
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
 
-    auto state = std::unique_ptr<SimulationState>(new SimulationState());
+    auto state = std::unique_ptr<State>(new State());
     std::vector<std::unique_ptr<IMeasurement> > measurements;
 
     auto s = Simulation(ecs, event_generators);
@@ -94,7 +94,7 @@ TEST_P(NOPEventSimulation, execute) {
     auto eg_ptr = eg.get();
     event_generators.push_back(std::move(eg));
 
-    auto state = std::unique_ptr<SimulationState>(new SimulationState());
+    auto state = std::unique_ptr<State>(new State());
     std::vector<std::unique_ptr<IMeasurement> > measurements;
 
     auto s = Simulation(ecs, event_generators);

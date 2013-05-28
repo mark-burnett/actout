@@ -5,7 +5,7 @@
 #include "entities/IEventGenerator.hpp"
 #include "entities/IMeasurement.hpp"
 #include "entities/IRNG.hpp"
-#include "entities/SimulationState.hpp"
+#include "entities/State.hpp"
 
 #include <memory>
 #include <vector>
@@ -26,16 +26,16 @@ public:
         : end_conditions_(end_conditions),
         event_generators_(event_generators) {};
 
-    void execute(SimulationState* state,
+    void execute(State* state,
             std::vector<std::unique_ptr<IMeasurement> >& measurements,
             IRNG* rng);
 
 private:
     std::vector<double> calculate_accumulated_rates(
-            SimulationState const* state,
+            State const* state,
             std::vector<StateModificationDescriptor> const&
                 modified_state_components);
-    std::unique_ptr<IEvent const> next_event(SimulationState const* state,
+    std::unique_ptr<IEvent const> next_event(State const* state,
             std::vector<double> const& event_rates, IRNG* rng) const;
 };
 

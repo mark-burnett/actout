@@ -2,7 +2,7 @@
 #include "entities/IEvent.hpp"
 #include "entities/IMeasurement.hpp"
 #include "entities/Simulation.hpp"
-#include "entities/SimulationState.hpp"
+#include "entities/State.hpp"
 
 #include "entities/events/NOP.hpp"
 
@@ -15,7 +15,7 @@ using namespace std::placeholders;
 namespace entities {
 
 void
-Simulation::execute(SimulationState* state,
+Simulation::execute(State* state,
         std::vector<std::unique_ptr<IMeasurement> >& measurements, IRNG* rng) {
     std::vector<StateModificationDescriptor> state_component_modifications;
 
@@ -57,7 +57,7 @@ Simulation::execute(SimulationState* state,
 
 
 std::vector<double>
-Simulation::calculate_accumulated_rates(SimulationState const* state,
+Simulation::calculate_accumulated_rates(State const* state,
             std::vector<StateModificationDescriptor> const&
                 modified_state_components) {
     std::vector<double> accumulated_rates;
@@ -74,7 +74,7 @@ Simulation::calculate_accumulated_rates(SimulationState const* state,
 
 
 std::unique_ptr<IEvent const>
-Simulation::next_event(SimulationState const* state,
+Simulation::next_event(State const* state,
         std::vector<double> const& accumulated_rates,
         IRNG* rng) const {
     double r = rng->uniform(0, state->total_event_rate);

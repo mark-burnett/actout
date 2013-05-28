@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entities/SimulationState.hpp"
+#include "entities/State.hpp"
 
 #include <inttypes.h>
 #include <memory>
@@ -23,7 +23,7 @@ public:
     virtual ~IEvent() {}
 
     virtual std::vector<StateModificationDescriptor>
-        apply(SimulationState* state) const = 0;
+        apply(State* state) const = 0;
 };
 
 } // namespace entities

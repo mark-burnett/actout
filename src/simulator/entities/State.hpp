@@ -14,7 +14,7 @@ using entities::state_components::IFilament;
 
 namespace entities {
 
-struct SimulationState {
+struct State {
     double time;
     double total_event_rate;
     uint64_t event_count;
