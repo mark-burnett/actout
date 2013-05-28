@@ -2,7 +2,6 @@
 
 #include "entities/SimulationState.hpp"
 #include "entities/IEvent.hpp"
-#include "entities/IStateComponent.hpp"
 
 #include <memory>
 #include <vector>

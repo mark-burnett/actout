@@ -1,7 +1,6 @@
 #pragma once
 
 #include "entities/SimulationState.hpp"
-#include "entities/IStateComponent.hpp"
 
 #include <inttypes.h>
 #include <memory>
@@ -11,8 +10,12 @@ namespace entities {
 
 struct StateModificationDescriptor {
     uint64_t component_id;
-    // XXX make this an enum (created, deleted, modified);
-    bool deleted;
+
+    enum component_type_t {CONCENTRATION, FILAMENT};
+    component_type_t component_type;
+
+    enum modification_t {CREATED, DELETED, MODIFIED};
+    modification_t modification;
 };
 
 class IEvent {

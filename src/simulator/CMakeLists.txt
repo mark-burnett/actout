@@ -15,27 +15,21 @@ set(PROTO_DEFINITIONS
 PROTOBUF_GENERATE_CPP(PROTO_SOURCES PROTO_HEADERS ${PROTO_DEFINITIONS})
 
 set(SOURCES
+    entities/IConcentration.hpp
     entities/IEndCondition.hpp
     entities/IEvent.hpp
     entities/IEventGenerator.hpp
+    entities/IFilament.hpp
     entities/IMeasurement.hpp
     entities/IRNG.hpp
-    entities/IStateComponent.hpp
     entities/Simulation.cpp
     entities/Simulation.hpp
-    entities/SimulationState.cpp
     entities/SimulationState.hpp
 
     entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
 
-    entities/event_generators/Increment.cpp
-    entities/event_generators/Increment.hpp
-
-    entities/events/Increment.hpp
     entities/events/NOP.hpp
-
-    entities/state_components/UnsignedInteger.hpp
 
     interactions/CreateSimulation.cpp
     interactions/CreateSimulation.hpp

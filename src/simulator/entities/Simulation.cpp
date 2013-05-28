@@ -1,7 +1,6 @@
 #include "entities/IEndCondition.hpp"
 #include "entities/IEvent.hpp"
 #include "entities/IMeasurement.hpp"
-#include "entities/IStateComponent.hpp"
 #include "entities/Simulation.hpp"
 #include "entities/SimulationState.hpp"
 
@@ -19,6 +18,8 @@ void
 Simulation::execute(SimulationState* state,
         std::vector<std::unique_ptr<IMeasurement> >& measurements, IRNG* rng) {
     std::vector<StateModificationDescriptor> state_component_modifications;
+
+    // XXX Get initial state component modifications (all things created)
 
     while (true) {
         auto accumulated_rates = calculate_accumulated_rates(
