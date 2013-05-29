@@ -393,47 +393,6 @@ SingleStrandFilament::end() const {
     return SingleStrandFilamentIterator(segments_.cend());
 }
 
-//void
-//SingleStrandFilament::fracture_pointed_edge(
-//        std::list<Segment>::iterator& segment,
-//        SpeciesMap::species_t const& new_species) {
-//    auto pointed_neighbor = std::prev(segment);
-//    if (pointed_neighbor != segments_.end()) {
-//        segments_.emplace(segment, 1, new_species);
-//        --segment->number;
-//
-//        auto old_species = segment->species;
-//        auto pointed_species = pointed_neighbor->species;
-//
-//        --species_counts_[old_species];
-//        ++species_counts_[new_species];
-//
-//        --boundary_counts_[pointed_species][old_species];
-//        ++boundary_counts_[new_species][old_species];
-//        ++boundary_counts_[pointed_species][new_species];
-//
-//        merge_segments(pointed_neighbor, segment);
-//    } else {
-//    }
-//}
-
-
-//void
-//SingleStrandFilament::merge_segments(std::list<Segment>::iterator& begin,
-//        std::list<Segment>::iterator const& end) {
-//    while (begin != end) {
-//        auto barbed_neighbor = std::next(begin);
-//        auto species = begin->species;
-//        if (species == barbed_neighbor->species) {
-//            begin->number += barbed_neighbor->number;
-//            segments_.erase(barbed_neighbor);
-//            --boundary_counts_[species][species];
-//        } else {
-//            ++begin;
-//        }
-//    }
-//}
-
 
 } // namespace state
 } // namespace entities

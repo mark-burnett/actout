@@ -73,11 +73,6 @@ public:
         std::vector<SpeciesMap::species_t>::iterator begin,
         std::vector<SpeciesMap::species_t>::iterator end);
 
-//            std::iterator<std::forward_iterator_tag,
-//                SpeciesMap::species_t const>& begin,
-//            std::iterator<std::forward_iterator_tag,
-//                SpeciesMap::species_t const>& end);
-
     SingleStrandFilament(uint64_t const& num_species,
             uint64_t const& number,
             SpeciesMap::species_t const& species);
