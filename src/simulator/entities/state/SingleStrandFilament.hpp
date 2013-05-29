@@ -12,8 +12,6 @@
 namespace entities {
 namespace state {
 
-class SingleStrandFilamentIterator;
-
 class SingleStrandFilament : public IFilament{
 private:
     struct Segment {
@@ -30,6 +28,38 @@ private:
     std::vector<uint64_t> species_counts_;
     std::vector<std::vector<uint64_t> > boundary_counts_;
 
+    class SingleStrandFilamentIterator : public boost::iterator_facade<
+                                            SingleStrandFilamentIterator,
+                                            SpeciesMap::species_t const,
+                                            boost::bidirectional_traversal_tag> {
+    public:
+        SingleStrandFilamentIterator(
+                std::list<SingleStrandFilament::Segment>::const_iterator segment)
+            : segment_(segment), index_(0) {}
+
+    private:
+        std::list<SingleStrandFilament::Segment>::const_iterator segment_;
+        uint64_t index_;
+
+        friend class boost::iterator_core_access;
+
+        void increment() {
+            ++index_;
+            if (index_ < segment_->number) {
+                return;
+            } else {
+                index_ = 0;
+                ++segment_;
+            }
+        }
+
+        SpeciesMap::species_t const& dereference() const {
+            return segment_->species;
+        }
+        bool equal(SingleStrandFilamentIterator const& other) const {
+            return segment_ == other.segment_ && index_ == other.index_;
+        }
+    };
     void fracture_segment(std::list<Segment>::iterator& segment,
             uint64_t const& index,
             SpeciesMap::species_t const& new_species);
@@ -78,40 +108,6 @@ public:
 
     SingleStrandFilamentIterator begin() const;
     SingleStrandFilamentIterator end() const;
-};
-
-
-class SingleStrandFilamentIterator : public boost::iterator_facade<
-                                        SingleStrandFilamentIterator,
-                                        SpeciesMap::species_t const,
-                                        boost::bidirectional_traversal_tag> {
-public:
-    SingleStrandFilamentIterator(
-            std::list<SingleStrandFilament::Segment>::const_iterator segment)
-        : segment_(segment), index_(0) {}
-
-private:
-    std::list<SingleStrandFilament::Segment>::const_iterator segment_;
-    uint64_t index_;
-
-    friend class boost::iterator_core_access;
-
-    void increment() {
-        ++index_;
-        if (index_ < segment_->number) {
-            return;
-        } else {
-            index_ = 0;
-            ++segment_;
-        }
-    }
-
-    SpeciesMap::species_t const& dereference() const {
-        return segment_->species;
-    }
-    bool equal(SingleStrandFilamentIterator const& other) const {
-        return segment_ == other.segment_ && index_ == other.index_;
-    }
 };
 
 

@@ -383,12 +383,12 @@ SingleStrandFilament::fracture_unitary_segment(
 }
 
 
-SingleStrandFilamentIterator
+SingleStrandFilament::SingleStrandFilamentIterator
 SingleStrandFilament::begin() const {
     return SingleStrandFilamentIterator(segments_.cbegin());
 }
 
-SingleStrandFilamentIterator
+SingleStrandFilament::SingleStrandFilamentIterator
 SingleStrandFilament::end() const {
     return SingleStrandFilamentIterator(segments_.cend());
 }
