@@ -49,6 +49,7 @@ public:
             SpeciesMap::species_index_t const& new_barbed_species) = 0;
 };
 
+class DepolymerizingEmptyFilament : public std::exception {};
 
 } // namespace state
 } // namespace entities

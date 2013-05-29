@@ -142,7 +142,7 @@ SingleStrandFilament::pop_barbed() {
 
         return species;
     } else {
-        throw 7; //DepolymerizingEmptyFilament();
+        throw DepolymerizingEmptyFilament();
     }
 }
 
@@ -166,7 +166,7 @@ SingleStrandFilament::pop_pointed() {
 
         return species;
     } else {
-        throw 7; //DepolymerizingEmptyFilament();
+        throw DepolymerizingEmptyFilament();
     }
 }
 

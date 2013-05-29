@@ -12,7 +12,7 @@ using namespace boost::assign;
 using namespace entities;
 using namespace entities::state;
 
-TEST(SingleStrandFilament, IteratorConstructor) {
+TEST(SingleStrandFilamentTest, IteratorConstructor) {
     std::vector<SpeciesMap::species_index_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
@@ -26,7 +26,7 @@ TEST(SingleStrandFilament, IteratorConstructor) {
     EXPECT_EQ(1, f.boundary_count(0, 2));
 }
 
-TEST(SingleStrandFilament, NumberSpeciesConstructor) {
+TEST(SingleStrandFilamentTest, NumberSpeciesConstructor) {
     SingleStrandFilament f(5, 26, 0);
     EXPECT_EQ(26, f.length());EXPECT_EQ(26, f.species_count(0));
     EXPECT_EQ( 0, f.species_count(1));
@@ -36,7 +36,7 @@ TEST(SingleStrandFilament, NumberSpeciesConstructor) {
     EXPECT_EQ(0, f.peek_barbed());
 }
 
-TEST(SingleStrandFilament, Append) {
+TEST(SingleStrandFilamentTest, Append) {
     SingleStrandFilament f(3, 20, 0);
 
     f.append_barbed(1);
@@ -50,7 +50,7 @@ TEST(SingleStrandFilament, Append) {
     EXPECT_EQ(1, f.species_count(2));
 }
 
-TEST(SingleStrandFilament, Remove) {
+TEST(SingleStrandFilamentTest, Remove) {
     SingleStrandFilament f(3, 20, 0);
 
     SpeciesMap::species_index_t s = f.pop_barbed();
@@ -73,32 +73,32 @@ TEST(SingleStrandFilament, Remove) {
 
 }
 
-//TEST(SingleStrandFilament, RemoveEmpty) {
-//    filaments::SingleStrandFilament f(1, 0);
-//
-//    SpeciesMap::species_index_t s = f.pop_barbed();
-//    EXPECT_EQ(0, s);
-//    EXPECT_EQ(0, f.length());
-//    EXPECT_EQ(0, f.species_count(0));
-//
-//    try {
-//        f.pop_barbed();
-//        EXPECT_TRUE(false) << "Should have thrown exception.";
-//    } catch (filaments::DepolymerizingEmptyFilament e) {
-//    }
-//    EXPECT_EQ(0, f.length());
-//    EXPECT_EQ(0, f.species_count(0));
-//
-//    try {
-//        f.pop_barbed();
-//        EXPECT_TRUE(false) << "Should have thrown exception.";
-//    } catch (filaments::DepolymerizingEmptyFilament e) {
-//    }
-//    EXPECT_EQ(0, f.length());
-//    EXPECT_EQ(0, f.species_count(0));
-//}
+TEST(SingleStrandFilamentTest, RemoveEmpty) {
+    SingleStrandFilament f(2, 1, 0);
 
-TEST(SingleStrandFilament, UpdateSpecies) {
+    SpeciesMap::species_index_t s = f.pop_barbed();
+    EXPECT_EQ(0, s);
+    EXPECT_EQ(0, f.length());
+    EXPECT_EQ(0, f.species_count(0));
+
+    try {
+        f.pop_barbed();
+        EXPECT_TRUE(false) << "Should have thrown exception.";
+    } catch (DepolymerizingEmptyFilament e) {
+    }
+    EXPECT_EQ(0, f.length());
+    EXPECT_EQ(0, f.species_count(0));
+
+    try {
+        f.pop_barbed();
+        EXPECT_TRUE(false) << "Should have thrown exception.";
+    } catch (DepolymerizingEmptyFilament e) {
+    }
+    EXPECT_EQ(0, f.length());
+    EXPECT_EQ(0, f.species_count(0));
+}
+
+TEST(SingleStrandFilamentTest, UpdateSpecies) {
     SingleStrandFilament f(5, 20, 0);
 
     f.update_subunit(4, 0, 1);
@@ -127,7 +127,7 @@ TEST(SingleStrandFilament, UpdateSpecies) {
     EXPECT_EQ(1, f.species_count(3));
 }
 
-TEST(SingleStrandFilament, UpdateBoundary) {
+TEST(SingleStrandFilamentTest, UpdateBoundary) {
     SingleStrandFilament f(5, 20, 0);
 
     f.update_subunit(5, 0, 1);
@@ -154,7 +154,7 @@ TEST(SingleStrandFilament, UpdateBoundary) {
 }
 
 // Specific SingleStrandFilament cases to test
-TEST(SingleStrandFilament, FractureSingleCasePointedEndMerge) {
+TEST(SingleStrandFilamentTest, FractureSingleCasePointedEndMerge) {
     std::vector<SpeciesMap::species_index_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
@@ -180,191 +180,191 @@ TEST(SingleStrandFilament, FractureSingleCasePointedEndMerge) {
     }
 }
 
-//TEST(SingleStrandFilament, FractureSingleCasePointedEndNoMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 2, 1, 0, 0, 2, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(0, 0, 2);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 2));
-//    EXPECT_EQ(2, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+TEST(SingleStrandFilamentTest, FractureSingleCasePointedEndNoMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-//TEST(SingleStrandFilament, FractureSingleCaseBarbedEndMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 0, 2, 1, 0, 0;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(2, 1, 0);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 2));
-//    EXPECT_EQ(1, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 2, 1, 0, 0, 2, 1, 0, 1;
 
-//TEST(SingleStrandFilament, FractureSingleCaseBarbedEndNoMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 0, 2, 1, 0, 2;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(2, 1, 2);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(2, f.boundary_count(0, 2));
-//    EXPECT_EQ(1, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(0, 0, 2);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
 
-//TEST(SingleStrandFilament, FractureSingleCaseNoEndLeftMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 0, 0, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(0, 2, 0);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(0, f.boundary_count(0, 2));
-//    EXPECT_EQ(0, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
 
-//TEST(SingleStrandFilament, FractureSingleCaseNoEndRightMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 0, 1, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(0, 2, 1);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(0, f.boundary_count(0, 2));
-//    EXPECT_EQ(0, f.boundary_count(2, 1));
-//
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    EXPECT_EQ(1, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
 
-//TEST(SingleStrandFilament, FractureSingleCaseNoEndNoMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 0, 3, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(0, 2, 3);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(2, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(0, f.boundary_count(0, 2));
-//    EXPECT_EQ(0, f.boundary_count(2, 1));
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 3));
-//    EXPECT_EQ(1, f.boundary_count(3, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    EXPECT_EQ(1, f.boundary_count(0, 2));
+    EXPECT_EQ(2, f.boundary_count(2, 1));
 
-//TEST(SingleStrandFilament, FractureSingleCaseNoEndMergeAll) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 0, 2, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 0, 0, 0, 2, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(0, 1, 0);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 1));
-//    EXPECT_EQ(1, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 2));
-//    EXPECT_EQ(1, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureSingleCaseBarbedEndMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 0, 2, 1, 0, 0;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(2, 1, 0);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(1, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(1, f.boundary_count(0, 2));
+    EXPECT_EQ(1, f.boundary_count(2, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureSingleCaseBarbedEndNoMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 0, 2, 1, 0, 2;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(2, 1, 2);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(1, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(2, f.boundary_count(0, 2));
+    EXPECT_EQ(1, f.boundary_count(2, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndLeftMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 0, 0, 1, 0, 1;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(0, 2, 0);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(0, f.boundary_count(0, 2));
+    EXPECT_EQ(0, f.boundary_count(2, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndRightMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 0, 1, 1, 0, 1;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(0, 2, 1);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(0, f.boundary_count(0, 2));
+    EXPECT_EQ(0, f.boundary_count(2, 1));
+
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndNoMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 0, 3, 1, 0, 1;
+
+    SingleStrandFilament f(4, values.begin(), values.end());
+    f.update_subunit(0, 2, 3);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(2, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(0, f.boundary_count(0, 2));
+    EXPECT_EQ(0, f.boundary_count(2, 1));
+
+    EXPECT_EQ(1, f.boundary_count(0, 3));
+    EXPECT_EQ(1, f.boundary_count(3, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndMergeAll) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 0, 0, 0, 2, 1, 0, 1;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(0, 1, 0);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(1, f.boundary_count(0, 1));
+    EXPECT_EQ(1, f.boundary_count(1, 0));
+
+    EXPECT_EQ(1, f.boundary_count(0, 2));
+    EXPECT_EQ(1, f.boundary_count(2, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
 
 //// Non 1 length segment fracture cases:
 //// left segment edge, not at pointed end, with merge
@@ -375,178 +375,178 @@ TEST(SingleStrandFilament, FractureSingleCasePointedEndMerge) {
 //// right segment edge, at barbed end, no merge
 //// middle of segment, ??? - could be more explicit
 
-//TEST(SingleStrandFilament, FractureMultipleCaseLeftEdgeNoEndMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 1, 1, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 0, 1, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(1, 1, 0);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgeNoEndMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 1, 1, 1, 0, 1;
 
-//TEST(SingleStrandFilament, FractureMultipleCaseLeftEdgeNoEndNoMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 1, 1, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 2, 1, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(1, 1, 2);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(2, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(1, f.boundary_count(0, 2));
-//    EXPECT_EQ(1, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 0, 1, 1, 0, 1;
 
-//TEST(SingleStrandFilament, FractureMultipleCaseLeftEdgePointedEnd) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 0, 1, 1, 0, 1, 0, 0;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 1, 0, 1, 1, 0, 1, 0, 0;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(0, 0, 1);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(2, f.boundary_count(0, 1));
-//    EXPECT_EQ(3, f.boundary_count(1, 0));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    SingleStrandFilament f(2, values.begin(), values.end());
+    f.update_subunit(1, 1, 0);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
 
-//TEST(SingleStrandFilament, FractureMultipleCaseRightEdgeNoEndMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 1, 1, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 1, 1, 0, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(3, 1, 0);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
 
-//TEST(SingleStrandFilament, FractureMultipleCaseRightEdgeNoEndNoMerge) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 1, 1, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 1, 1, 2, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(3, 1, 2);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(1, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(0, f.boundary_count(0, 2));
-//    EXPECT_EQ(0, f.boundary_count(2, 1));
-//
-//    EXPECT_EQ(1, f.boundary_count(1, 2));
-//    EXPECT_EQ(1, f.boundary_count(2, 0));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
 
-//TEST(SingleStrandFilament, FractureMultipleCaseRightEdgeBarbedEnd) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 0, 1, 1, 0, 1, 0, 0;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 0, 1, 1, 0, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(4, 0, 1);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
 
-//TEST(SingleStrandFilament, FractureMultipleCaseMiddle) {
-//    std::vector<SpeciesMap::species_index_t> values;
-//    values += 0, 1, 0, 1, 1, 1, 0, 1;
-//
-//    std::vector<SpeciesMap::species_index_t> expected_result;
-//    expected_result += 0, 1, 0, 1, 2, 1, 0, 1;
-//
-//    filaments::SingleStrandFilament f(values.begin(), values.end());
-//    f.update_subunit(2, 1, 2);
-//    std::vector<SpeciesMap::species_index_t> actual_result(f.get_states());
-//
-//    EXPECT_EQ(8, f.length());
-//    EXPECT_EQ(8, actual_result.size());
-//
-//    EXPECT_EQ(3, f.boundary_count(0, 1));
-//    EXPECT_EQ(2, f.boundary_count(1, 0));
-//
-//    EXPECT_EQ(0, f.boundary_count(0, 2));
-//    EXPECT_EQ(0, f.boundary_count(2, 0));
-//
-//    EXPECT_EQ(1, f.boundary_count(1, 2));
-//    EXPECT_EQ(1, f.boundary_count(2, 1));
-//
-//    for (size_t i = 0; i < expected_result.size(); ++i) {
-//        EXPECT_EQ(expected_result[i], actual_result[i])
-//            << "i = " << i << std::endl;
-//    }
-//}
+TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgeNoEndNoMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 1, 1, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 2, 1, 1, 0, 1;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(1, 1, 2);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(2, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(1, f.boundary_count(0, 2));
+    EXPECT_EQ(1, f.boundary_count(2, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgePointedEnd) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 0, 1, 1, 0, 1, 0, 0;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 1, 0, 1, 1, 0, 1, 0, 0;
+
+    SingleStrandFilament f(2, values.begin(), values.end());
+    f.update_subunit(0, 0, 1);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(2, f.boundary_count(0, 1));
+    EXPECT_EQ(3, f.boundary_count(1, 0));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeNoEndMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 1, 1, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 1, 1, 0, 0, 1;
+
+    SingleStrandFilament f(2, values.begin(), values.end());
+    f.update_subunit(3, 1, 0);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeNoEndNoMerge) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 1, 1, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 1, 1, 2, 0, 1;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(3, 1, 2);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(1, f.boundary_count(1, 0));
+
+    EXPECT_EQ(0, f.boundary_count(0, 2));
+    EXPECT_EQ(0, f.boundary_count(2, 1));
+
+    EXPECT_EQ(1, f.boundary_count(1, 2));
+    EXPECT_EQ(1, f.boundary_count(2, 0));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeBarbedEnd) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 0, 1, 1, 0, 1, 0, 0;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 0, 1, 1, 0, 1, 0, 1;
+
+    SingleStrandFilament f(2, values.begin(), values.end());
+    f.update_subunit(4, 0, 1);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
+
+TEST(SingleStrandFilamentTest, FractureMultipleCaseMiddle) {
+    std::vector<SpeciesMap::species_index_t> values;
+    values += 0, 1, 0, 1, 1, 1, 0, 1;
+
+    std::vector<SpeciesMap::species_index_t> expected_result;
+    expected_result += 0, 1, 0, 1, 2, 1, 0, 1;
+
+    SingleStrandFilament f(3, values.begin(), values.end());
+    f.update_subunit(2, 1, 2);
+    std::vector<SpeciesMap::species_index_t> actual_result(f.begin(), f.end());
+
+    EXPECT_EQ(8, f.length());
+    EXPECT_EQ(8, actual_result.size());
+
+    EXPECT_EQ(3, f.boundary_count(0, 1));
+    EXPECT_EQ(2, f.boundary_count(1, 0));
+
+    EXPECT_EQ(0, f.boundary_count(0, 2));
+    EXPECT_EQ(0, f.boundary_count(2, 0));
+
+    EXPECT_EQ(1, f.boundary_count(1, 2));
+    EXPECT_EQ(1, f.boundary_count(2, 1));
+
+    for (size_t i = 0; i < expected_result.size(); ++i) {
+        EXPECT_EQ(expected_result[i], actual_result[i])
+            << "i = " << i << std::endl;
+    }
+}
