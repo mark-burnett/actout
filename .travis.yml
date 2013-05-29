@@ -13,7 +13,7 @@ notifications:
 before_install:
     - sudo apt-get install cmake
 install:
-    - sudo apt-get install libprotobuf-dev protobuf-compiler
+    - sudo apt-get install libprotobuf-dev protobuf-compiler libboost-dev
 
 before_script:
     - mkdir build
