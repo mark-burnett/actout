@@ -7,7 +7,7 @@ compiler:
 notifications:
     email:
         on_failure: always
-        on_success: always  # XXX For experimentation, set to "change" later
+        on_success: change
 
 
 before_install:
