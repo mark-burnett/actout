@@ -18,10 +18,10 @@ class SingleStrandFilament : public IFilament{
 private:
     struct Segment {
         uint64_t number;
-        SpeciesMap::species_index_t species;
+        SpeciesMap::species_t species;
 
         Segment(uint64_t const& number_,
-                SpeciesMap::species_index_t const& species_)
+                SpeciesMap::species_t const& species_)
             : number(number_), species(species_) {}
     };
 
@@ -32,49 +32,49 @@ private:
 
     void fracture_segment(std::list<Segment>::iterator& segment,
             uint64_t const& index,
-            SpeciesMap::species_index_t const& new_species);
+            SpeciesMap::species_t const& new_species);
 
     void fracture_unitary_segment(std::list<Segment>::iterator& segment,
-            SpeciesMap::species_index_t const& new_species);
+            SpeciesMap::species_t const& new_species);
 
 public:
     void initialize_counts(uint64_t const& num_species);
     SingleStrandFilament(uint64_t const& num_species,
-        std::vector<SpeciesMap::species_index_t>::iterator begin,
-        std::vector<SpeciesMap::species_index_t>::iterator end);
+        std::vector<SpeciesMap::species_t>::iterator begin,
+        std::vector<SpeciesMap::species_t>::iterator end);
 
 //            std::iterator<std::forward_iterator_tag,
-//                SpeciesMap::species_index_t const>& begin,
+//                SpeciesMap::species_t const>& begin,
 //            std::iterator<std::forward_iterator_tag,
-//                SpeciesMap::species_index_t const>& end);
+//                SpeciesMap::species_t const>& end);
 
     SingleStrandFilament(uint64_t const& num_species,
             uint64_t const& number,
-            SpeciesMap::species_index_t const& species);
+            SpeciesMap::species_t const& species);
 
     uint64_t species_count(
-            SpeciesMap::species_index_t const& species) const;
-    uint64_t boundary_count(SpeciesMap::species_index_t const& pointed_species,
-            SpeciesMap::species_index_t const& barbed_species) const;
+            SpeciesMap::species_t const& species) const;
+    uint64_t boundary_count(SpeciesMap::species_t const& pointed_species,
+            SpeciesMap::species_t const& barbed_species) const;
     uint64_t length() const;
 
-    SpeciesMap::species_index_t const peek_barbed() const;
-    SpeciesMap::species_index_t const peek_pointed() const;
+    SpeciesMap::species_t const peek_barbed() const;
+    SpeciesMap::species_t const peek_pointed() const;
 
 
-    void append_barbed(SpeciesMap::species_index_t const& species);
-    void append_pointed(SpeciesMap::species_index_t const& species);
+    void append_barbed(SpeciesMap::species_t const& species);
+    void append_pointed(SpeciesMap::species_t const& species);
 
-    SpeciesMap::species_index_t const pop_barbed();
-    SpeciesMap::species_index_t const pop_pointed();
+    SpeciesMap::species_t const pop_barbed();
+    SpeciesMap::species_t const pop_pointed();
 
     void update_subunit(uint64_t instance_number,
-            SpeciesMap::species_index_t const& old_species,
-            SpeciesMap::species_index_t const& new_species);
+            SpeciesMap::species_t const& old_species,
+            SpeciesMap::species_t const& new_species);
     void update_boundary(uint64_t instance_number,
-            SpeciesMap::species_index_t const& old_pointed_species,
-            SpeciesMap::species_index_t const& old_barbed_species,
-            SpeciesMap::species_index_t const& new_barbed_species);
+            SpeciesMap::species_t const& old_pointed_species,
+            SpeciesMap::species_t const& old_barbed_species,
+            SpeciesMap::species_t const& new_barbed_species);
 
     SingleStrandFilamentIterator begin() const;
     SingleStrandFilamentIterator end() const;
@@ -83,7 +83,7 @@ public:
 
 class SingleStrandFilamentIterator : public boost::iterator_facade<
                                         SingleStrandFilamentIterator,
-                                        SpeciesMap::species_index_t const,
+                                        SpeciesMap::species_t const,
                                         boost::bidirectional_traversal_tag> {
 public:
     SingleStrandFilamentIterator(
@@ -106,7 +106,7 @@ private:
         }
     }
 
-    SpeciesMap::species_index_t const& dereference() const {
+    SpeciesMap::species_t const& dereference() const {
         return segment_->species;
     }
     bool equal(SingleStrandFilamentIterator const& other) const {

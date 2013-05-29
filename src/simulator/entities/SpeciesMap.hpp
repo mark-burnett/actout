@@ -10,11 +10,11 @@ private:
     std::vector<std::string> species_map_;
 
 public:
-    typedef std::vector<std::string>::size_type species_index_t;
+    typedef std::vector<std::string>::size_type species_t;
 
-    species_index_t get_species_index(std::string const& species_string);
+    species_t get_species_index(std::string const& species_name);
     std::string const get_species_string(
-            species_index_t const& species_index) const;
+            species_t const& species_index) const;
 };
 
 } // namespace entities
