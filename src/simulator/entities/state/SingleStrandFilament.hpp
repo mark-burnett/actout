@@ -77,6 +77,9 @@ public:
             SpeciesMap::species_index_t const& old_pointed_species,
             SpeciesMap::species_index_t const& old_barbed_species,
             SpeciesMap::species_index_t const& new_barbed_species);
+
+    SingleStrandFilamentIterator begin() const;
+    SingleStrandFilamentIterator end() const;
 };
 
 
@@ -87,6 +90,12 @@ class SingleStrandFilamentIterator : public boost::iterator_facade<
 public:
     SingleStrandFilamentIterator(SingleStrandFilament const& filament)
         : segment_(filament.segments_.cbegin()), index_(0) {}
+    SingleStrandFilamentIterator(
+            std::list<SingleStrandFilament::Segment>::const_iterator segment,
+            uint64_t index) : segment_(segment), index_(index) {}
+    SingleStrandFilamentIterator(
+            std::list<SingleStrandFilament::Segment>::const_iterator segment)
+        : segment_(segment), index_(0) {}
 
 private:
     std::list<SingleStrandFilament::Segment>::const_iterator segment_;
@@ -94,7 +103,16 @@ private:
 
     friend class boost::iterator_core_access;
 
-    void increment() {}
+    void increment() {
+        ++index_;
+        if (index_ < segment_->number) {
+            return;
+        } else {
+            index_ = 0;
+            ++segment_;
+        }
+    }
+
     SpeciesMap::species_index_t const& dereference() const {
         return segment_->species;
     }

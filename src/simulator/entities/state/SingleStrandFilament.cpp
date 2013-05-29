@@ -383,6 +383,16 @@ SingleStrandFilament::fracture_unitary_segment(
 }
 
 
+SingleStrandFilamentIterator
+SingleStrandFilament::begin() const {
+    return SingleStrandFilamentIterator(segments_.cbegin());
+}
+
+SingleStrandFilamentIterator
+SingleStrandFilament::end() const {
+    return SingleStrandFilamentIterator(segments_.cend());
+}
+
 //void
 //SingleStrandFilament::fracture_pointed_edge(
 //        std::list<Segment>::iterator& segment,
