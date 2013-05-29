@@ -9,8 +9,8 @@
 #include <vector>
 
 
-using entities::state_components::IConcentration;
-using entities::state_components::IFilament;
+using entities::state::IConcentration;
+using entities::state::IFilament;
 
 
 namespace entities {

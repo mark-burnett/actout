@@ -30,6 +30,9 @@ set(SOURCES
     entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
 
+    entities/state/SingleStrandFilament.cpp
+    entities/state/SingleStrandFilament.hpp
+
     interactions/CreateSimulation.cpp
     interactions/CreateSimulation.hpp
     interactions/IInteraction.hpp

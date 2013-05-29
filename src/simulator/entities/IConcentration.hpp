@@ -3,7 +3,7 @@
 #include <inttypes.h>
 
 namespace entities {
-namespace state_components {
+namespace state {
 
 class IConcentration {
 public:
@@ -16,5 +16,5 @@ public:
     virtual void remove_monomer() = 0;
 };
 
-} // namespace state_components
+} // namespace state
 } // namespace entities
