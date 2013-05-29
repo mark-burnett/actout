@@ -37,8 +37,6 @@ private:
     void fracture_unitary_segment(std::list<Segment>::iterator& segment,
             SpeciesMap::species_index_t const& new_species);
 
-    friend class SingleStrandFilamentIterator;
-
 public:
     void initialize_counts(uint64_t const& num_species);
     SingleStrandFilament(uint64_t const& num_species,
@@ -88,11 +86,6 @@ class SingleStrandFilamentIterator : public boost::iterator_facade<
                                         SpeciesMap::species_index_t const,
                                         boost::bidirectional_traversal_tag> {
 public:
-    SingleStrandFilamentIterator(SingleStrandFilament const& filament)
-        : segment_(filament.segments_.cbegin()), index_(0) {}
-    SingleStrandFilamentIterator(
-            std::list<SingleStrandFilament::Segment>::const_iterator segment,
-            uint64_t index) : segment_(segment), index_(index) {}
     SingleStrandFilamentIterator(
             std::list<SingleStrandFilament::Segment>::const_iterator segment)
         : segment_(segment), index_(0) {}
