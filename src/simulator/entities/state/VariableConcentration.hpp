@@ -11,13 +11,8 @@ namespace state {
 
 class VariableConcentration : public IConcentration {
 public:
-    VariableConcentration(double concentration, double fnc,
-            uint64_t number_of_filaments=1,
-            double scale_concentration=1,
-            double subtract_fraction=0) :
-        _number((scale_concentration - subtract_fraction)
-                * concentration * number_of_filaments / fnc),
-        _volume(number_of_filaments / fnc) {}
+    VariableConcentration(double const& concentration, double const& volume)
+        : _number(volume * concentration), _volume(volume) {}
 
     double value() const { return _number / _volume; }
     void add_monomer() { ++_number;};

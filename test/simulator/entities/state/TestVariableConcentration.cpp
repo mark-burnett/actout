@@ -4,7 +4,7 @@
 
 
 TEST(Concentrations, VariableConcentration) {
-    entities::state::VariableConcentration c(4.8, 1.2);
+    entities::state::VariableConcentration c(4.8, 1 / 1.2);
 
     EXPECT_DOUBLE_EQ(4.8, c.value());
 
