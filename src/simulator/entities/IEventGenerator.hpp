@@ -13,6 +13,11 @@ struct StateModificationDescriptor {
 
     enum modification_t {CREATED, DELETED, MODIFIED};
     modification_t modification;
+
+    StateModificationDescriptor(uint64_t const& component_id_,
+            component_type_t const& component_type_,
+            modification_t const& modification_) : component_id(component_id_),
+    component_type(component_type_), modification(modification_) {}
 };
 
 

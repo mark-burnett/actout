@@ -1,5 +1,5 @@
-set(CMAKE_C_FLAGS "-std=c99 -Wall -pedantic")
-set(CMAKE_CXX_FLAGS "-Wall -ansi -pedantic -fPIC -Wnon-virtual-dtor")
+set(CMAKE_C_FLAGS "-std=c99 -Wall -Werror -pedantic")
+set(CMAKE_CXX_FLAGS "-Wall -Werror -ansi -pedantic -fPIC -Wnon-virtual-dtor")
 
 if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")

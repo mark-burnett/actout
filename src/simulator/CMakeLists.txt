@@ -30,6 +30,9 @@ set(SOURCES
     entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
 
+    entities/event_generators/Polymerization.cpp
+    entities/event_generators/Polymerization.hpp
+
     entities/state/FixedConcentration.hpp
     entities/state/SingleStrandFilament.cpp
     entities/state/SingleStrandFilament.hpp
