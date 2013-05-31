@@ -16,9 +16,6 @@ private:
     typedef std::vector<std::unique_ptr<IEndCondition const> > ec_container;
     typedef std::vector<std::unique_ptr<IEventGenerator> > eg_container;
 
-    ec_container const& end_conditions_;
-    eg_container& event_generators_;
-
 public:
     Simulation(ec_container const& end_conditions,
             eg_container& event_generators)
@@ -37,6 +34,10 @@ private:
     std::vector<StateModificationDescriptor> perform_next_event(
             State* state, std::vector<double> const& accumulated_rates,
             IRNG* rng) const;
+
+private:
+    ec_container const& end_conditions_;
+    eg_container& event_generators_;
 };
 
 } // namespace entities
