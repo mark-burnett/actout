@@ -1,7 +1,6 @@
 #include "entities/state/SingleStrandFilament.hpp"
 #include "entities/SpeciesMap.hpp"
 
-
 #include <algorithm>
 #include <functional>
 #include <iterator>
@@ -9,6 +8,7 @@
 
 namespace entities {
 namespace state {
+
 
 void
 SingleStrandFilament::initialize_counts(uint64_t const& num_species) {

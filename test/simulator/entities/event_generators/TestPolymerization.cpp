@@ -35,12 +35,10 @@ class Polymerization : public testing::Test {
 
             s.concentrations.push_back(std::move(
                         std::unique_ptr<state::VariableConcentration>(
-                            new state::VariableConcentration(
-                                6, 1))));
+                            new state::VariableConcentration(6, 1))));
             s.concentrations.push_back(std::move(
                         std::unique_ptr<state::VariableConcentration>(
-                            new state::VariableConcentration(
-                                4, 1))));
+                            new state::VariableConcentration(4, 1))));
         }
 
         virtual void TearDown() {
@@ -66,26 +64,38 @@ TEST_F(Polymerization, Basic) {
     EXPECT_EQ(6, s.concentrations[0]->monomer_count());
     EXPECT_EQ(4, s.concentrations[1]->monomer_count());
 
-//    EXPECT_EQ(1, t_b0.perform(0, 8.5, filaments, concentrations));
-//    EXPECT_EQ(8, filaments[0]->length());
-//    EXPECT_EQ(9, filaments[1]->length());
-//    EXPECT_EQ(0, filaments[1]->barbed_state());
-//    EXPECT_DOUBLE_EQ(10, t_b0.R(0, filaments, concentrations, 1));
-//    EXPECT_DOUBLE_EQ(16, t_b1.R(0, filaments, concentrations, 1));
-//    EXPECT_DOUBLE_EQ(30, t_p0.R(0, filaments, concentrations, 1));
-//    EXPECT_DOUBLE_EQ(32, t_p1.R(0, filaments, concentrations, 1));
-//    EXPECT_EQ(5, concentrations[0]->monomer_count());
-//    EXPECT_EQ(4, concentrations[1]->monomer_count());
-//
-//    EXPECT_EQ(0, t_p1.perform(0, 12.1, filaments, concentrations));
-//    EXPECT_EQ(9, filaments[0]->length());
-//    EXPECT_EQ(9, filaments[1]->length());
-//    EXPECT_EQ(1, filaments[0]->pointed_state());
-//    EXPECT_DOUBLE_EQ(10, t_b0.R(0, filaments, concentrations, 0));
-//    EXPECT_DOUBLE_EQ(12, t_b1.R(0, filaments, concentrations, 0));
-//    EXPECT_DOUBLE_EQ(30, t_p0.R(0, filaments, concentrations, 0));
-//    EXPECT_DOUBLE_EQ(24, t_p1.R(0, filaments, concentrations, 0));
-//    EXPECT_EQ(5, concentrations[0]->monomer_count());
-//    EXPECT_EQ(3, concentrations[1]->monomer_count());
-//
+    EXPECT_EQ(8, s.filaments[0]->length());
+
+    {
+        auto modifications = t_b0.perform_event(&s, 8.5);
+        EXPECT_EQ(1, modifications.size());
+        EXPECT_EQ(1, modifications[0].component_id);
+    }
+
+    EXPECT_EQ(8, s.filaments[0]->length());
+    EXPECT_EQ(9, s.filaments[1]->length());
+    EXPECT_EQ(0, s.filaments[1]->peek_barbed());
+    EXPECT_DOUBLE_EQ(10, t_b0.rate(&s, no_modifications));
+    EXPECT_DOUBLE_EQ(16, t_b1.rate(&s, no_modifications));
+    EXPECT_DOUBLE_EQ(30, t_p0.rate(&s, no_modifications));
+    EXPECT_DOUBLE_EQ(32, t_p1.rate(&s, no_modifications));
+    EXPECT_EQ(5, s.concentrations[0]->monomer_count());
+    EXPECT_EQ(4, s.concentrations[1]->monomer_count());
+
+    {
+        auto modifications = t_p1.perform_event(&s, 12.1);
+        EXPECT_EQ(1, modifications.size());
+        EXPECT_EQ(0, modifications[0].component_id);
+    }
+
+    EXPECT_EQ(9, s.filaments[0]->length());
+    EXPECT_EQ(9, s.filaments[1]->length());
+    EXPECT_EQ(1, s.filaments[0]->peek_pointed());
+    EXPECT_DOUBLE_EQ(10, t_b0.rate(&s, no_modifications));
+    EXPECT_DOUBLE_EQ(12, t_b1.rate(&s, no_modifications));
+    EXPECT_DOUBLE_EQ(30, t_p0.rate(&s, no_modifications));
+    EXPECT_DOUBLE_EQ(24, t_p1.rate(&s, no_modifications));
+    EXPECT_EQ(5, s.concentrations[0]->monomer_count());
+    EXPECT_EQ(3, s.concentrations[1]->monomer_count());
+
 }

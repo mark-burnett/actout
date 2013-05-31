@@ -1,6 +1,5 @@
 #include "entities/event_generators/Polymerization.hpp"
 
-
 namespace entities {
 namespace event_generators {
 
@@ -16,12 +15,16 @@ FixedRatePolymerizationBase::rate(State const* state,
 std::vector<StateModificationDescriptor>
 FixedRatePolymerizationBase::perform_event(State* state,
         double const& random_number) const {
-    uint64_t i = random_number / rate_;
+    uint64_t i = random_number / (
+            rate_ * state->concentrations[species_]->value());
     append_species(state->filaments[i].get());
+    state->concentrations[species_]->remove_monomer();
+
     std::vector<StateModificationDescriptor> r;
     r.reserve(1);
     r.emplace_back(i, StateModificationDescriptor::FILAMENT,
             StateModificationDescriptor::MODIFIED);
+
     return r;
 }
 

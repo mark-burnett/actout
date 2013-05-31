@@ -12,7 +12,7 @@
 namespace entities {
 namespace state {
 
-class SingleStrandFilament : public IFilament{
+class SingleStrandFilament : public IFilament {
 private:
     struct Segment {
         uint64_t number;
@@ -67,8 +67,9 @@ private:
     void fracture_unitary_segment(std::list<Segment>::iterator& segment,
             SpeciesMap::species_t const& new_species);
 
-public:
     void initialize_counts(uint64_t const& num_species);
+
+public:
     SingleStrandFilament(uint64_t const& num_species,
         std::vector<SpeciesMap::species_t>::iterator begin,
         std::vector<SpeciesMap::species_t>::iterator end);

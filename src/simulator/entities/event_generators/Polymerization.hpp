@@ -5,6 +5,10 @@
 #include "entities/SpeciesMap.hpp"
 #include "entities/State.hpp"
 
+#include "entities/state/SingleStrandFilament.hpp"
+
+#include <iostream>
+
 namespace entities {
 namespace event_generators {
 
