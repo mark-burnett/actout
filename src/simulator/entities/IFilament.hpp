@@ -21,10 +21,6 @@ public:
             species_t const& barbed_species) const = 0;
     virtual uint64_t length() const = 0;
 
-    // XXX Maybe we can provide an alternative marshalling mechanism?
-    //     What about analysis and plotting filaments?
-//    virtual std::vector<species_t const> get_data() const = 0;
-
     // query tip states
     virtual species_t const peek_barbed() const = 0;
     virtual species_t const peek_pointed() const = 0;
