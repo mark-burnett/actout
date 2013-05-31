@@ -14,7 +14,7 @@ namespace event_generators {
 
 class FixedRatePolymerizationBase : public IEventGenerator {
 public:
-    FixedRatePolymerizationBase(SpeciesMap::species_t const& species,
+    FixedRatePolymerizationBase(species_t const& species,
             double const& rate) : species_(species), rate_(rate) {}
 
     double rate(State const* state,
@@ -25,7 +25,7 @@ public:
             State* state, double const& random_number) const;
 
 protected:
-    SpeciesMap::species_t const species_;
+    species_t const species_;
     double const rate_;
 
     virtual void append_species(IFilament* filament) const = 0;
@@ -34,7 +34,7 @@ protected:
 
 class BarbedEndPolymerization : public FixedRatePolymerizationBase {
 public:
-    BarbedEndPolymerization(SpeciesMap::species_t const& species,
+    BarbedEndPolymerization(species_t const& species,
             double const& rate) : FixedRatePolymerizationBase(species, rate) {}
 
 protected:
@@ -46,7 +46,7 @@ protected:
 
 class PointedEndPolymerization : public FixedRatePolymerizationBase {
 public:
-    PointedEndPolymerization(SpeciesMap::species_t const& species,
+    PointedEndPolymerization(species_t const& species,
             double const& rate) : FixedRatePolymerizationBase(species, rate) {}
 
 protected:

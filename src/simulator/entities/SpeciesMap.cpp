@@ -1,4 +1,5 @@
 #include "entities/SpeciesMap.hpp"
+#include "entities/common.hpp"
 
 #include <algorithm>
 
@@ -6,7 +7,7 @@
 namespace entities {
 
 
-SpeciesMap::species_t
+species_t
 SpeciesMap::get_species_index(std::string const& species_name) {
     auto i = std::find(species_map_.begin(),
             species_map_.end(), species_name);

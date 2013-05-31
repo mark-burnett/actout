@@ -1,4 +1,4 @@
-#include "entities/SpeciesMap.hpp"
+#include "entities/common.hpp"
 #include "entities/state/SingleStrandFilament.hpp"
 
 #include <gtest/gtest.h>
@@ -13,7 +13,7 @@ using namespace entities;
 using namespace entities::state;
 
 TEST(SingleStrandFilamentTest, IteratorConstructor) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
@@ -53,7 +53,7 @@ TEST(SingleStrandFilamentTest, Append) {
 TEST(SingleStrandFilamentTest, Remove) {
     SingleStrandFilament f(3, 20, 0);
 
-    SpeciesMap::species_t s = f.pop_barbed();
+    species_t s = f.pop_barbed();
     EXPECT_EQ(0, s);
     EXPECT_EQ(19, f.length());
 
@@ -76,7 +76,7 @@ TEST(SingleStrandFilamentTest, Remove) {
 TEST(SingleStrandFilamentTest, RemoveEmpty) {
     SingleStrandFilament f(2, 1, 0);
 
-    SpeciesMap::species_t s = f.pop_barbed();
+    species_t s = f.pop_barbed();
     EXPECT_EQ(0, s);
     EXPECT_EQ(0, f.length());
     EXPECT_EQ(0, f.species_count(0));
@@ -155,15 +155,15 @@ TEST(SingleStrandFilamentTest, UpdateBoundary) {
 
 // Specific SingleStrandFilament cases to test
 TEST(SingleStrandFilamentTest, FractureSingleCasePointedEndMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 1, 1, 0, 0, 2, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(0, 0, 1);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -181,15 +181,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCasePointedEndMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCasePointedEndNoMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 2, 1, 0, 0, 2, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(0, 0, 2);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -207,15 +207,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCasePointedEndNoMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCaseBarbedEndMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 0, 2, 1, 0, 0;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(2, 1, 0);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -233,15 +233,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCaseBarbedEndMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCaseBarbedEndNoMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 0, 2, 1, 0, 2;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(2, 1, 2);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -259,15 +259,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCaseBarbedEndNoMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndLeftMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 0, 0, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(0, 2, 0);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -285,15 +285,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndLeftMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndRightMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 0, 1, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(0, 2, 1);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -312,15 +312,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndRightMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndNoMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 0, 3, 1, 0, 1;
 
     SingleStrandFilament f(4, values.begin(), values.end());
     f.update_subunit(0, 2, 3);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -341,15 +341,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndNoMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndMergeAll) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 0, 0, 0, 2, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(0, 1, 0);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -376,15 +376,15 @@ TEST(SingleStrandFilamentTest, FractureSingleCaseNoEndMergeAll) {
 //// middle of segment, ??? - could be more explicit
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgeNoEndMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 1, 1, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 0, 1, 1, 0, 1;
 
     SingleStrandFilament f(2, values.begin(), values.end());
     f.update_subunit(1, 1, 0);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -399,15 +399,15 @@ TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgeNoEndMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgeNoEndNoMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 1, 1, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 2, 1, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(1, 1, 2);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -425,15 +425,15 @@ TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgeNoEndNoMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgePointedEnd) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 0, 1, 1, 0, 1, 0, 0;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 1, 0, 1, 1, 0, 1, 0, 0;
 
     SingleStrandFilament f(2, values.begin(), values.end());
     f.update_subunit(0, 0, 1);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -448,15 +448,15 @@ TEST(SingleStrandFilamentTest, FractureMultipleCaseLeftEdgePointedEnd) {
 }
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeNoEndMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 1, 1, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 1, 1, 0, 0, 1;
 
     SingleStrandFilament f(2, values.begin(), values.end());
     f.update_subunit(3, 1, 0);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -471,15 +471,15 @@ TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeNoEndMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeNoEndNoMerge) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 1, 1, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 1, 1, 2, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(3, 1, 2);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -500,15 +500,15 @@ TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeNoEndNoMerge) {
 }
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeBarbedEnd) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 0, 1, 1, 0, 1, 0, 0;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 0, 1, 1, 0, 1, 0, 1;
 
     SingleStrandFilament f(2, values.begin(), values.end());
     f.update_subunit(4, 0, 1);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());
@@ -523,15 +523,15 @@ TEST(SingleStrandFilamentTest, FractureMultipleCaseRightEdgeBarbedEnd) {
 }
 
 TEST(SingleStrandFilamentTest, FractureMultipleCaseMiddle) {
-    std::vector<SpeciesMap::species_t> values;
+    std::vector<species_t> values;
     values += 0, 1, 0, 1, 1, 1, 0, 1;
 
-    std::vector<SpeciesMap::species_t> expected_result;
+    std::vector<species_t> expected_result;
     expected_result += 0, 1, 0, 1, 2, 1, 0, 1;
 
     SingleStrandFilament f(3, values.begin(), values.end());
     f.update_subunit(2, 1, 2);
-    std::vector<SpeciesMap::species_t> actual_result(f.begin(), f.end());
+    std::vector<species_t> actual_result(f.begin(), f.end());
 
     EXPECT_EQ(8, f.length());
     EXPECT_EQ(8, actual_result.size());

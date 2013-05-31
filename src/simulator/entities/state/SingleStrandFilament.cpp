@@ -1,5 +1,5 @@
 #include "entities/state/SingleStrandFilament.hpp"
-#include "entities/SpeciesMap.hpp"
+#include "entities/common.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -23,13 +23,13 @@ SingleStrandFilament::initialize_counts(uint64_t const& num_species) {
 
 
 SingleStrandFilament::SingleStrandFilament(uint64_t const& num_species,
-        std::vector<SpeciesMap::species_t>::iterator begin,
-        std::vector<SpeciesMap::species_t>::iterator end) {
+        std::vector<species_t>::iterator begin,
+        std::vector<species_t>::iterator end) {
     initialize_counts(num_species);
 
     while (begin != end) {
         auto boundary = std::adjacent_find(begin, end,
-                std::not_equal_to<SpeciesMap::species_t const>());
+                std::not_equal_to<species_t const>());
         if (boundary != end) {
             ++boundary;
         }
@@ -49,7 +49,7 @@ SingleStrandFilament::SingleStrandFilament(uint64_t const& num_species,
 
 
 SingleStrandFilament::SingleStrandFilament(uint64_t const& num_species,
-        uint64_t const& number, SpeciesMap::species_t const& species) {
+        uint64_t const& number, species_t const& species) {
     initialize_counts(num_species);
     segments_.emplace_back(number, species);
     length_ = number;
@@ -59,14 +59,14 @@ SingleStrandFilament::SingleStrandFilament(uint64_t const& num_species,
 
 uint64_t
 SingleStrandFilament::species_count(
-        SpeciesMap::species_t const& species) const {
+        species_t const& species) const {
     return species_counts_[species];
 }
 
 uint64_t
 SingleStrandFilament::boundary_count(
-        SpeciesMap::species_t const& pointed_species,
-        SpeciesMap::species_t const& barbed_species) const {
+        species_t const& pointed_species,
+        species_t const& barbed_species) const {
     return boundary_counts_[pointed_species][barbed_species];
 }
 
@@ -75,12 +75,12 @@ SingleStrandFilament::length() const {
     return length_;
 }
 
-SpeciesMap::species_t const
+species_t const
 SingleStrandFilament::peek_barbed() const {
     return segments_.back().species;
 }
 
-SpeciesMap::species_t const
+species_t const
 SingleStrandFilament::peek_pointed() const {
     return segments_.front().species;
 }
@@ -88,7 +88,7 @@ SingleStrandFilament::peek_pointed() const {
 
 void
 SingleStrandFilament::append_barbed(
-        SpeciesMap::species_t const& species) {
+        species_t const& species) {
     if (0 == length_) {
         segments_.emplace_back(1, species);
     } else {
@@ -106,7 +106,7 @@ SingleStrandFilament::append_barbed(
 
 void
 SingleStrandFilament::append_pointed(
-        SpeciesMap::species_t const& species) {
+        species_t const& species) {
     if (0 == length_) {
         segments_.emplace_front(1, species);
     } else {
@@ -122,7 +122,7 @@ SingleStrandFilament::append_pointed(
     ++species_counts_[species];
 }
 
-SpeciesMap::species_t const
+species_t const
 SingleStrandFilament::pop_barbed() {
     if (length_ > 0) {
         Segment &seg = segments_.back();
@@ -146,7 +146,7 @@ SingleStrandFilament::pop_barbed() {
     }
 }
 
-SpeciesMap::species_t const
+species_t const
 SingleStrandFilament::pop_pointed() {
     if (length_ > 0) {
         Segment &seg = segments_.front();
@@ -172,8 +172,8 @@ SingleStrandFilament::pop_pointed() {
 
 void
 SingleStrandFilament::update_subunit(uint64_t instance_number,
-        SpeciesMap::species_t const& old_species,
-        SpeciesMap::species_t const& new_species) {
+        species_t const& old_species,
+        species_t const& new_species) {
     if (instance_number >= species_counts_[old_species]) {
         throw 3; //IllegalStateIndex();
     }
@@ -195,9 +195,9 @@ SingleStrandFilament::update_subunit(uint64_t instance_number,
 
 void
 SingleStrandFilament::update_boundary(uint64_t instance_number,
-        SpeciesMap::species_t const& old_pointed_species,
-        SpeciesMap::species_t const& old_barbed_species,
-        SpeciesMap::species_t const& new_barbed_species) {
+        species_t const& old_pointed_species,
+        species_t const& old_barbed_species,
+        species_t const& new_barbed_species) {
     if (instance_number >=
             boundary_counts_[old_pointed_species][old_barbed_species]) {
         throw 4; //IllegalBoundaryIndex();
@@ -239,7 +239,7 @@ SingleStrandFilament::update_boundary(uint64_t instance_number,
 
 void
 SingleStrandFilament::fracture_segment(std::list<Segment>::iterator& segment,
-        uint64_t const& index, SpeciesMap::species_t const& new_species) {
+        uint64_t const& index, species_t const& new_species) {
     if (1 == segment->number) {
         fracture_unitary_segment(segment, new_species);
         return;
@@ -308,7 +308,7 @@ SingleStrandFilament::fracture_segment(std::list<Segment>::iterator& segment,
 void
 SingleStrandFilament::fracture_unitary_segment(
         std::list<Segment>::iterator& segment,
-        SpeciesMap::species_t const& new_species) {
+        species_t const& new_species) {
     auto old_species = segment->species;
     auto pn = std::prev(segment);
     auto bn = std::next(segment);

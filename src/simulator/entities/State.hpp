@@ -3,6 +3,7 @@
 #include "entities/IConcentration.hpp"
 #include "entities/IFilament.hpp"
 #include "entities/SpeciesMap.hpp"
+#include "entities/common.hpp"
 
 #include <inttypes.h>
 #include <memory>

@@ -2,7 +2,7 @@
 #include "entities/event_generators/Polymerization.hpp"
 #include "entities/state/SingleStrandFilament.hpp"
 #include "entities/state/VariableConcentration.hpp"
-#include "entities/SpeciesMap.hpp"
+#include "entities/common.hpp"
 
 #include <boost/assign/std/vector.hpp>
 #include <boost/shared_ptr.hpp>
@@ -19,9 +19,9 @@ using namespace entities;
 class Polymerization : public testing::Test {
     protected:
         virtual void SetUp() {
-            std::vector<SpeciesMap::species_t> values1;
+            std::vector<species_t> values1;
             values1 += 0, 1, 0, 0, 2, 1, 0, 1;
-            std::vector<SpeciesMap::species_t> values2;
+            std::vector<species_t> values2;
             values2 += 1, 1, 2, 0, 2, 0, 0, 0;
 
             s.filaments.push_back(std::move(
