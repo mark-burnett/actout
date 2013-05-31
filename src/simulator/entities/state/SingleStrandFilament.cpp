@@ -1,5 +1,6 @@
 #include "entities/state/SingleStrandFilament.hpp"
 #include "entities/common.hpp"
+#include "entities/exceptions.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -175,7 +176,7 @@ SingleStrandFilament::update_subunit(uint64_t instance_number,
         species_t const& old_species,
         species_t const& new_species) {
     if (instance_number >= species_counts_[old_species]) {
-        throw 3; //IllegalStateIndex();
+        throw IllegalSpeciesIndex();
     }
 
     // XXX fracture should be responsible for updating the species_counts_
@@ -200,7 +201,7 @@ SingleStrandFilament::update_boundary(uint64_t instance_number,
         species_t const& new_barbed_species) {
     if (instance_number >=
             boundary_counts_[old_pointed_species][old_barbed_species]) {
-        throw 4; //IllegalBoundaryIndex();
+        throw IllegalBoundaryIndex();
     }
     if (length_ > 0) {
         // XXX fracture should be responsible for updating the species_counts_
@@ -214,7 +215,7 @@ SingleStrandFilament::update_boundary(uint64_t instance_number,
         ++barbed_segment;
 
         if (segments_.end() == barbed_segment) {
-            throw 6; //BoundaryUpdateSmallFilament();
+            throw BoundaryUpdateSmallFilament();
         }
 
         while (barbed_segment != segments_.end()) {
@@ -233,7 +234,7 @@ SingleStrandFilament::update_boundary(uint64_t instance_number,
             ++barbed_segment;
         }
     } else {
-        throw 5; //BoundaryUpdateEmptyFilament();
+        throw BoundaryUpdateEmptyFilament();
     }
 }
 

@@ -2,7 +2,6 @@
 
 #include "entities/common.hpp"
 
-#include <exception>
 #include <inttypes.h>
 
 
@@ -50,7 +49,6 @@ public:
             species_t const& new_barbed_species) = 0;
 };
 
-class DepolymerizingEmptyFilament : public std::exception {};
 
 } // namespace state
 } // namespace entities

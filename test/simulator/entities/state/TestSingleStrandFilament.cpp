@@ -1,16 +1,18 @@
-#include "entities/common.hpp"
 #include "entities/state/SingleStrandFilament.hpp"
+#include "entities/common.hpp"
+#include "entities/exceptions.hpp"
 
-#include <gtest/gtest.h>
-
-#include <vector>
 #include <boost/assign/std/vector.hpp>
+#include <gtest/gtest.h>
+#include <vector>
+
 
 // Bring operator+= into the namespace
 using namespace boost::assign;
 
 using namespace entities;
 using namespace entities::state;
+
 
 TEST(SingleStrandFilamentTest, IteratorConstructor) {
     std::vector<species_t> values;
