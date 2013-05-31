@@ -15,9 +15,12 @@ void
 SingleStrandFilament::initialize_counts(uint64_t const& num_species) {
     length_ = 0;
 
+    species_counts_.reserve(num_species);
     species_counts_.resize(num_species);
+    boundary_counts_.reserve(num_species);
     boundary_counts_.resize(num_species);
     for (auto& bc_row : boundary_counts_) {
+        bc_row.reserve(num_species);
         bc_row.resize(num_species);
     }
 }
