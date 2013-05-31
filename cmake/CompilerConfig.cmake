@@ -1,11 +1,14 @@
-set(CMAKE_C_FLAGS "-std=c99 -Wall -Werror -pedantic")
-set(CMAKE_CXX_FLAGS "-Wall -Werror -ansi -pedantic -fPIC -Wnon-virtual-dtor")
+set(CMAKE_C_FLAGS "-std=c99 -Wall -pedantic")
+set(CMAKE_CXX_FLAGS "-Wall -ansi -pedantic -fPIC -Wnon-virtual-dtor")
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_GLIBCXX_DEBUG")
 
 if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
     SET(CMAKE_C_FLAGS_COVERAGE "${CMAKE_C_FLAGS_DEBUG} --coverage")
     SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_DEBUG} --coverage")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Werror")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11 -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
 endif ()
