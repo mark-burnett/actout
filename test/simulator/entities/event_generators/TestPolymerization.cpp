@@ -68,8 +68,9 @@ TEST_F(Polymerization, Basic) {
 
     {
         auto modifications = t_b0.perform_event(&s, 8.5);
-        EXPECT_EQ(1, modifications.size());
+        EXPECT_EQ(2, modifications.size());
         EXPECT_EQ(1, modifications[0].component_id);
+        EXPECT_EQ(0, modifications[1].component_id);
     }
 
     EXPECT_EQ(8, s.filaments[0]->length());
@@ -84,8 +85,9 @@ TEST_F(Polymerization, Basic) {
 
     {
         auto modifications = t_p1.perform_event(&s, 12.1);
-        EXPECT_EQ(1, modifications.size());
+        EXPECT_EQ(2, modifications.size());
         EXPECT_EQ(0, modifications[0].component_id);
+        EXPECT_EQ(1, modifications[1].component_id);
     }
 
     EXPECT_EQ(9, s.filaments[0]->length());

@@ -21,8 +21,10 @@ FixedRatePolymerizationBase::perform_event(State* state,
     state->concentrations[species_]->remove_monomer();
 
     std::vector<StateModificationDescriptor> r;
-    r.reserve(1);
+    r.reserve(2);
     r.emplace_back(i, StateModificationDescriptor::FILAMENT,
+            StateModificationDescriptor::MODIFIED);
+    r.emplace_back(species_, StateModificationDescriptor::CONCENTRATION,
             StateModificationDescriptor::MODIFIED);
 
     return r;
