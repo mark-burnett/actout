@@ -5,6 +5,7 @@
 actout is a Monte Carlo simulator for actin filament dynamics.  It is
 implemented efficiently, using the Gillespie algorithm.
 
+
 ## Project Status
 
 Currently under initial development.  That means migrating the core algorithm
@@ -22,13 +23,20 @@ One important goal for this project is to shed the significant cruft associated
 with the old project, so the complex database backend will be left behind
 unless and until it is deemed truly necessary.
 
+
 ## Installation
 
 ### Dependencies
 
+A c++ 11 friendly compiler.  The code is currently tested with gcc 4.6, clang
+3.0 and clang 3.2.
+
+- Boost
 - CMake
 - Google Protocol Buffers
 - Google Test
+
+To see specific (Ubuntu) dependencies, checkout .travis.yml
 
 ### Building the project
 
@@ -39,6 +47,7 @@ cmake ..
 make
 make test
 ```
+
 
 ## Usage
 
