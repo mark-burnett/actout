@@ -26,6 +26,9 @@ public:
             std::vector<std::unique_ptr<IMeasurement> >& measurements,
             IRNG* rng);
 
+    std::vector<StateModificationDescriptor> get_initial_modifications(
+            State const* state) const;
+
 private:
     std::vector<double> calculate_accumulated_rates(
             State const* state,

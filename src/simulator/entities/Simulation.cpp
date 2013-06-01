@@ -17,6 +17,7 @@ Simulation::execute(State* state,
     std::vector<StateModificationDescriptor> state_component_modifications;
 
     // XXX Get initial state component modifications (all things created)
+    state_component_modifications = get_initial_modifications(state);
 
     while (true) {
         auto accumulated_rates = calculate_accumulated_rates(
@@ -50,6 +51,24 @@ Simulation::execute(State* state,
     }
 }
 
+std::vector<StateModificationDescriptor>
+Simulation::get_initial_modifications(State const* state) const {
+    std::vector<StateModificationDescriptor> modifications;
+    modifications.reserve(
+            state->filaments.size() + state->concentrations.size());
+
+    for (uint64_t i = 0; i < state->filaments.size(); ++i) {
+        modifications.emplace_back(i, StateModificationDescriptor::FILAMENT,
+                StateModificationDescriptor::CREATED);
+    }
+
+    for (uint64_t i = 0; i < state->concentrations.size(); ++i) {
+        modifications.emplace_back(i, StateModificationDescriptor::CONCENTRATION,
+                StateModificationDescriptor::CREATED);
+    }
+
+    return modifications;
+}
 
 std::vector<double>
 Simulation::calculate_accumulated_rates(State const* state,

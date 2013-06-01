@@ -72,6 +72,26 @@ protected:
     std::unique_ptr<Simulation> simulation;
 };
 
+
+TEST_F(SimpleSimulation, get_initial_modifications) {
+    auto modifications = simulation->get_initial_modifications(&state);
+
+    ASSERT_EQ(2, modifications.size());
+
+    ASSERT_EQ(0, modifications[0].component_id);
+    ASSERT_EQ(StateModificationDescriptor::FILAMENT,
+            modifications[0].component_type);
+    ASSERT_EQ(StateModificationDescriptor::CREATED,
+            modifications[0].modification);
+
+    ASSERT_EQ(0, modifications[1].component_id);
+    ASSERT_EQ(StateModificationDescriptor::CONCENTRATION,
+            modifications[1].component_type);
+    ASSERT_EQ(StateModificationDescriptor::CREATED,
+            modifications[1].modification);
+}
+
+
 TEST_F(SimpleSimulation, polymerization) {
     end_conditions.push_back(std::move(
                 std::unique_ptr<EventCount>(
