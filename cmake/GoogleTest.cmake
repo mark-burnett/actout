@@ -1,9 +1,16 @@
 # --- Utility ---
 macro(def_test testName)
-    add_executable(Test${testName} Test${testName}.cpp ${COMMON_SOURCES})
-    target_link_libraries(Test${testName} ${TEST_LIBS} ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    add_executable(Test${testName} Test${testName}.cpp ${TEST_MAIN})
+    if(NOT TEST_MAIN)
+        target_link_libraries(Test${testName}
+            ${TEST_LIBS} ${GTEST_BOTH_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+    else()
+        target_link_libraries(Test${testName}
+            ${TEST_LIBS} ${GTEST_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+    endif()
     if($ENV{UNIT_TEST_VALGRIND})
-        add_test(NAME Test${testName} COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:Test${testName}>)
+        add_test(NAME Test${testName}
+            COMMAND valgrind --leak-check=full --error-exitcode=1 $<TARGET_FILE:Test${testName}>)
     else()
         add_test(NAME Test${testName} COMMAND Test${testName})
     endif()
@@ -18,16 +25,19 @@ find_package(GTest)
 if(NOT GTEST_FOUND)
     if(EXISTS "/usr/src/gtest/CMakeLists.txt")
         add_subdirectory("/usr/src/gtest" "${CMAKE_BINARY_DIR}/gtest")
-        #        include_directories("/usr/include/gtest")
-        set(GTEST_BOTH_LIBRARIES
+        set(GTEST_LIBRARY
             ${CMAKE_BINARY_DIR}/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}
+        )
+        set(GTEST_BOTH_LIBRARIES
+            $GTEST_LIBRARY
             ${CMAKE_BINARY_DIR}/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}
         )
     else()
         # Fallback to svn download
         include(ExternalProject)
 
-        set_directory_properties(PROPERTIES EP_PREFIX ${CMAKE_BINARY_DIR}/ThirdParty)
+        set_directory_properties(PROPERTIES
+            EP_PREFIX ${CMAKE_BINARY_DIR}/ThirdParty)
 
         ExternalProject_Add(
             googletest
