@@ -18,6 +18,9 @@ namespace entities {
 
 
 struct State {
+public:
+    State() : time(0), total_event_rate(0), event_count(0) {}
+
     double time;
     double total_event_rate;
     uint64_t event_count;
