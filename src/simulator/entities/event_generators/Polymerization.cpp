@@ -4,15 +4,16 @@ namespace entities {
 namespace event_generators {
 
 
+
 double
 FixedRatePolymerizationBase::rate(State const* state,
-        std::vector<StateModificationDescriptor> const&
-                modified_state_components) {
+        StateModifications const& modifications) {
     return rate_ * state->concentrations[species_]->value()
         * state->filaments.size();
 }
 
-std::vector<StateModificationDescriptor>
+
+StateModifications
 FixedRatePolymerizationBase::perform_event(State* state,
         double const& random_number) const {
     uint64_t i = random_number / (
@@ -20,14 +21,14 @@ FixedRatePolymerizationBase::perform_event(State* state,
     append_species(state->filaments[i].get());
     state->concentrations[species_]->remove_monomer();
 
-    std::vector<StateModificationDescriptor> r;
-    r.reserve(2);
-    r.emplace_back(i, StateModificationDescriptor::FILAMENT,
-            StateModificationDescriptor::MODIFIED);
-    r.emplace_back(species_, StateModificationDescriptor::CONCENTRATION,
-            StateModificationDescriptor::MODIFIED);
+    StateModifications modifications;
 
-    return r;
+    modifications.modified_filaments.reserve(1);
+    modifications.modified_filaments.emplace_back(i);
+    modifications.modified_concentrations.reserve(1);
+    modifications.modified_concentrations.emplace_back(species_);
+
+    return modifications;
 }
 
 

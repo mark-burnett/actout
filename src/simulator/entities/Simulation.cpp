@@ -2,6 +2,7 @@
 #include "entities/IMeasurement.hpp"
 #include "entities/Simulation.hpp"
 #include "entities/State.hpp"
+#include "entities/StateModifications.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -14,14 +15,13 @@ namespace entities {
 void
 Simulation::execute(State* state,
         std::vector<std::unique_ptr<IMeasurement> >& measurements, IRNG* rng) {
-    std::vector<StateModificationDescriptor> state_component_modifications;
+    StateModifications modifications;
 
-    // XXX Get initial state component modifications (all things created)
-    state_component_modifications = get_initial_modifications(state);
+    modifications = get_initial_modifications(state);
 
     while (true) {
         auto accumulated_rates = calculate_accumulated_rates(
-                state, state_component_modifications);
+                state, modifications);
         if (accumulated_rates.empty()) {
             state->total_event_rate = 0;
         } else {
@@ -46,25 +46,22 @@ Simulation::execute(State* state,
             break;
         }
 
-        state_component_modifications = perform_next_event(
-                state, accumulated_rates, rng);
+        modifications = perform_next_event(state, accumulated_rates, rng);
     }
 }
 
-std::vector<StateModificationDescriptor>
+StateModifications
 Simulation::get_initial_modifications(State const* state) const {
-    std::vector<StateModificationDescriptor> modifications;
-    modifications.reserve(
-            state->filaments.size() + state->concentrations.size());
+    StateModifications modifications;
 
+    modifications.created_filaments.reserve(state->filaments.size());
     for (uint64_t i = 0; i < state->filaments.size(); ++i) {
-        modifications.emplace_back(i, StateModificationDescriptor::FILAMENT,
-                StateModificationDescriptor::CREATED);
+        modifications.created_filaments.emplace_back(i);
     }
 
+    modifications.modified_concentrations.reserve(state->concentrations.size());
     for (uint64_t i = 0; i < state->concentrations.size(); ++i) {
-        modifications.emplace_back(i, StateModificationDescriptor::CONCENTRATION,
-                StateModificationDescriptor::CREATED);
+        modifications.modified_concentrations.emplace_back(i);
     }
 
     return modifications;
@@ -72,14 +69,13 @@ Simulation::get_initial_modifications(State const* state) const {
 
 std::vector<double>
 Simulation::calculate_accumulated_rates(State const* state,
-            std::vector<StateModificationDescriptor> const&
-                modified_state_components) {
+            StateModifications const& modifications) {
     std::vector<double> accumulated_rates;
     accumulated_rates.reserve(event_generators_.size());
 
     double accumulated_rate = 0;
     for (auto& i : event_generators_) {
-         accumulated_rate += i->rate(state, modified_state_components);
+         accumulated_rate += i->rate(state, modifications);
          accumulated_rates.push_back(accumulated_rate);
     }
 
@@ -87,7 +83,7 @@ Simulation::calculate_accumulated_rates(State const* state,
 }
 
 
-std::vector<StateModificationDescriptor>
+StateModifications
 Simulation::perform_next_event(State* state,
         std::vector<double> const& accumulated_rates,
         IRNG* rng) const {
@@ -96,7 +92,8 @@ Simulation::perform_next_event(State* state,
             accumulated_rates.cend(), r);
 
     if (i == accumulated_rates.cend()) {
-        return std::vector<StateModificationDescriptor>();
+        // XXX This should probably throw an exception...
+        return StateModifications();
     } else {
         state->event_count++;
         return event_generators_[std::distance(

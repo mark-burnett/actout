@@ -1,8 +1,9 @@
 #include "entities/State.hpp"
+#include "entities/StateModifications.hpp"
+#include "entities/common.hpp"
 #include "entities/event_generators/Polymerization.hpp"
 #include "entities/state/SingleStrandFilament.hpp"
 #include "entities/state/VariableConcentration.hpp"
-#include "entities/common.hpp"
 
 #include <boost/assign/std/vector.hpp>
 #include <boost/shared_ptr.hpp>
@@ -56,7 +57,7 @@ TEST_F(Polymerization, Basic) {
     event_generators::PointedEndPolymerization t_p0(0, 3);
     event_generators::PointedEndPolymerization t_p1(1, 4);
 
-    std::vector<StateModificationDescriptor> no_modifications;
+    StateModifications const no_modifications;
     EXPECT_DOUBLE_EQ(12, t_b0.rate(&s, no_modifications));
     EXPECT_DOUBLE_EQ(16, t_b1.rate(&s, no_modifications));
     EXPECT_DOUBLE_EQ(36, t_p0.rate(&s, no_modifications));
@@ -68,9 +69,10 @@ TEST_F(Polymerization, Basic) {
 
     {
         auto modifications = t_b0.perform_event(&s, 8.5);
-        EXPECT_EQ(2, modifications.size());
-        EXPECT_EQ(1, modifications[0].component_id);
-        EXPECT_EQ(0, modifications[1].component_id);
+        EXPECT_EQ(1, modifications.modified_filaments.size());
+        EXPECT_EQ(1, modifications.modified_filaments[0]);
+        EXPECT_EQ(1, modifications.modified_concentrations.size());
+        EXPECT_EQ(0, modifications.modified_concentrations[0]);
     }
 
     EXPECT_EQ(8, s.filaments[0]->length());
@@ -85,9 +87,10 @@ TEST_F(Polymerization, Basic) {
 
     {
         auto modifications = t_p1.perform_event(&s, 12.1);
-        EXPECT_EQ(2, modifications.size());
-        EXPECT_EQ(0, modifications[0].component_id);
-        EXPECT_EQ(1, modifications[1].component_id);
+        EXPECT_EQ(1, modifications.modified_filaments.size());
+        EXPECT_EQ(0, modifications.modified_filaments[0]);
+        EXPECT_EQ(1, modifications.modified_concentrations.size());
+        EXPECT_EQ(1, modifications.modified_concentrations[0]);
     }
 
     EXPECT_EQ(9, s.filaments[0]->length());

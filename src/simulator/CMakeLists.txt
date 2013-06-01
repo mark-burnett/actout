@@ -26,6 +26,7 @@ set(SOURCES
     entities/SpeciesMap.cpp
     entities/SpeciesMap.hpp
     entities/State.hpp
+    entities/StateModifications.hpp
     entities/common.hpp
 
     entities/end_conditions/EventCount.cpp

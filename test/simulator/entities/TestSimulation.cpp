@@ -4,6 +4,7 @@
 #include "entities/IRNG.hpp"
 #include "entities/Simulation.hpp"
 #include "entities/State.hpp"
+#include "entities/StateModifications.hpp"
 
 #include "entities/end_conditions/EventCount.hpp"
 #include "entities/event_generators/Polymerization.hpp"
@@ -76,19 +77,8 @@ protected:
 TEST_F(SimpleSimulation, get_initial_modifications) {
     auto modifications = simulation->get_initial_modifications(&state);
 
-    ASSERT_EQ(2, modifications.size());
-
-    ASSERT_EQ(0, modifications[0].component_id);
-    ASSERT_EQ(StateModificationDescriptor::FILAMENT,
-            modifications[0].component_type);
-    ASSERT_EQ(StateModificationDescriptor::CREATED,
-            modifications[0].modification);
-
-    ASSERT_EQ(0, modifications[1].component_id);
-    ASSERT_EQ(StateModificationDescriptor::CONCENTRATION,
-            modifications[1].component_type);
-    ASSERT_EQ(StateModificationDescriptor::CREATED,
-            modifications[1].modification);
+    ASSERT_EQ(1, modifications.created_filaments.size());
+    ASSERT_EQ(1, modifications.modified_concentrations.size());
 }
 
 

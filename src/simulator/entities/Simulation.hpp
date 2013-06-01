@@ -5,6 +5,7 @@
 #include "entities/IMeasurement.hpp"
 #include "entities/IRNG.hpp"
 #include "entities/State.hpp"
+#include "entities/StateModifications.hpp"
 
 #include <memory>
 #include <vector>
@@ -26,17 +27,13 @@ public:
             std::vector<std::unique_ptr<IMeasurement> >& measurements,
             IRNG* rng);
 
-    std::vector<StateModificationDescriptor> get_initial_modifications(
-            State const* state) const;
+    StateModifications get_initial_modifications(State const* state) const;
 
 private:
-    std::vector<double> calculate_accumulated_rates(
-            State const* state,
-            std::vector<StateModificationDescriptor> const&
-                modified_state_components);
-    std::vector<StateModificationDescriptor> perform_next_event(
-            State* state, std::vector<double> const& accumulated_rates,
-            IRNG* rng) const;
+    std::vector<double> calculate_accumulated_rates(State const* state,
+            StateModifications const& modifications);
+    StateModifications perform_next_event(State* state,
+            std::vector<double> const& accumulated_rates, IRNG* rng) const;
 
 private:
     ec_container const& end_conditions_;
