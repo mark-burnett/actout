@@ -28,7 +28,7 @@ unless and until it is deemed truly necessary.
 
 ### Dependencies
 
-A c++ 11 friendly compiler.  The code is currently tested with gcc 4.6, clang
+A c++ 11 friendly compiler -- the code is currently tested with gcc 4.6, clang
 3.0 and clang 3.2.
 
 - Boost
