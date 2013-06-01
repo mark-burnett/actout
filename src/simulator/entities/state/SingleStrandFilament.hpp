@@ -107,5 +107,16 @@ public:
 };
 
 
+template<typename C>
+typename C::iterator
+bounded_prev(typename C::iterator& i, C& l) {
+    if (i == l.begin()) {
+        return l.end();
+    } else {
+        return std::prev(i);
+    }
+}
+
+
 } // namespace state
 } // namespace entities

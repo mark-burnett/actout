@@ -262,7 +262,7 @@ SingleStrandFilament::fracture_segment(std::list<Segment>::iterator& segment,
         // no merge, 2 boundaries
 
     if (0 == left) { // left edge of segment
-        auto pn = std::prev(segment);
+        auto pn = bounded_prev(segment, segments_);
         if (segments_.end() != pn) { // not near pointed end of filament
             if (new_species == pn->species) { // same, no boundary
                 ++(pn->number);
@@ -294,7 +294,7 @@ SingleStrandFilament::fracture_segment(std::list<Segment>::iterator& segment,
                 ++boundary_counts_[segment->species][new_species];
             }
         } else { // near barbed end of filament
-            segments_.emplace(bn, 1, new_species);
+            segments_.emplace_back(1, new_species);
             segment->number = left;
             ++boundary_counts_[segment->species][new_species];
         }
@@ -314,7 +314,7 @@ SingleStrandFilament::fracture_unitary_segment(
         std::list<Segment>::iterator& segment,
         species_t const& new_species) {
     auto old_species = segment->species;
-    auto pn = std::prev(segment);
+    auto pn = bounded_prev(segment, segments_);
     auto bn = std::next(segment);
 
     --species_counts_[old_species];
