@@ -17,36 +17,36 @@ using namespace boost::assign;
 using namespace entities;
 
 class Polymerization : public testing::Test {
-    protected:
-        virtual void SetUp() {
-            std::vector<species_t> values1;
-            values1 += 0, 1, 0, 0, 2, 1, 0, 1;
-            std::vector<species_t> values2;
-            values2 += 1, 1, 2, 0, 2, 0, 0, 0;
+protected:
+    virtual void SetUp() {
+        std::vector<species_t> values1;
+        values1 += 0, 1, 0, 0, 2, 1, 0, 1;
+        std::vector<species_t> values2;
+        values2 += 1, 1, 2, 0, 2, 0, 0, 0;
 
-            s.filaments.push_back(std::move(
-                        std::unique_ptr<state::SingleStrandFilament>(
-                            new state::SingleStrandFilament(3,
-                                values1.begin(), values1.end()))));
-            s.filaments.push_back(std::move(
-                        std::unique_ptr<state::SingleStrandFilament>(
-                            new state::SingleStrandFilament(3,
-                                values2.begin(), values2.end()))));
+        s.filaments.push_back(std::move(
+                    std::unique_ptr<state::SingleStrandFilament>(
+                        new state::SingleStrandFilament(3,
+                            values1.begin(), values1.end()))));
+        s.filaments.push_back(std::move(
+                    std::unique_ptr<state::SingleStrandFilament>(
+                        new state::SingleStrandFilament(3,
+                            values2.begin(), values2.end()))));
 
-            s.concentrations.push_back(std::move(
-                        std::unique_ptr<state::VariableConcentration>(
-                            new state::VariableConcentration(6, 1))));
-            s.concentrations.push_back(std::move(
-                        std::unique_ptr<state::VariableConcentration>(
-                            new state::VariableConcentration(4, 1))));
-        }
+        s.concentrations.push_back(std::move(
+                    std::unique_ptr<state::VariableConcentration>(
+                        new state::VariableConcentration(6, 1))));
+        s.concentrations.push_back(std::move(
+                    std::unique_ptr<state::VariableConcentration>(
+                        new state::VariableConcentration(4, 1))));
+    }
 
-        virtual void TearDown() {
-            s.filaments.clear();
-            s.concentrations.clear();
-        }
+    virtual void TearDown() {
+        s.filaments.clear();
+        s.concentrations.clear();
+    }
 
-        State s;
+    State s;
 };
 
 
