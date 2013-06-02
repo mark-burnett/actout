@@ -6,11 +6,9 @@
 #include "entities/state/VariableConcentration.hpp"
 
 #include <boost/assign/std/vector.hpp>
-#include <boost/shared_ptr.hpp>
+#include <gtest/gtest.h>
 #include <memory>
 #include <vector>
-
-#include <gtest/gtest.h>
 
 // Bring operator+= into the namespace
 using namespace boost::assign;
