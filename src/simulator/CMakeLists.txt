@@ -32,6 +32,8 @@ set(SOURCES
     entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
 
+    entities/event_generators/Depolymerization.cpp
+    entities/event_generators/Depolymerization.hpp
     entities/event_generators/Polymerization.cpp
     entities/event_generators/Polymerization.hpp
 
