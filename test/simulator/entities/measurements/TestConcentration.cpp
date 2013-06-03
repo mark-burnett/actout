@@ -14,7 +14,6 @@ using namespace entities;
 
 
 TEST(ConcentrationMeasurment, Basic) {
-    // Need a state w/ one concentration
     State s;
     s.concentrations.push_back(std::move(
                 std::unique_ptr<state::VariableConcentration>(
