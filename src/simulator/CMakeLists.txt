@@ -29,7 +29,6 @@ set(SOURCES
     entities/StateModifications.hpp
     entities/common.hpp
 
-    entities/end_conditions/EventCount.cpp
     entities/end_conditions/EventCount.hpp
 
     entities/event_generators/Depolymerization.cpp

@@ -13,10 +13,12 @@ private:
     uint64_t max_events_;
 
 public:
-    EventCount(uint64_t max_events)
+    EventCount(uint64_t const& max_events)
         : max_events_(max_events) {}
 
-    bool satisfied(State const* state) const;
+    bool satisfied(State const* state) const {
+        return (state->event_count >= max_events_);
+    }
 };
 
 } // namespace end_conditions
