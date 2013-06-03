@@ -37,6 +37,9 @@ set(SOURCES
     entities/event_generators/Polymerization.cpp
     entities/event_generators/Polymerization.hpp
 
+    entities/measurements/Concentration.hpp
+    entities/measurements/SingleValueBase.hpp
+
     entities/state/FixedConcentration.hpp
     entities/state/SingleStrandFilament.cpp
     entities/state/SingleStrandFilament.hpp
