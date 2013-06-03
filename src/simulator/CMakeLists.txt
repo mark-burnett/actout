@@ -34,6 +34,7 @@ set(SOURCES
 
     entities/event_generators/Depolymerization.cpp
     entities/event_generators/Depolymerization.hpp
+    entities/event_generators/FreeSpeciesChange.hpp
     entities/event_generators/Polymerization.cpp
     entities/event_generators/Polymerization.hpp
 
