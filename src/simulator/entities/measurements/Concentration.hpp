@@ -4,10 +4,6 @@
 #include "entities/measurements/SingleValueBase.hpp"
 #include "entities/common.hpp"
 
-#include <cmath>
-#include <inttypes.h>
-#include <vector>
-
 
 namespace entities {
 namespace measurements {
