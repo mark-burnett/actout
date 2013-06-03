@@ -41,6 +41,8 @@ set(SOURCES
     entities/measurements/Concentration.hpp
     entities/measurements/SingleValueBase.hpp
 
+    entities/rng/MersenneTwister.hpp
+
     entities/state/FixedConcentration.hpp
     entities/state/SingleStrandFilament.cpp
     entities/state/SingleStrandFilament.hpp
