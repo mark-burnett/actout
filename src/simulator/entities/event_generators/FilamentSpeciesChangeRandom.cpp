@@ -2,7 +2,6 @@
 #include "entities/StateModifications.hpp"
 #include "entities/event_generators/FilamentSpeciesChangeRandom.hpp"
 
-#include <iostream>
 
 namespace entities {
 namespace event_generators {

@@ -7,7 +7,6 @@
 #include <inttypes.h>
 #include <vector>
 
-#include <iostream>
 
 namespace entities {
 namespace measurements {
