@@ -39,6 +39,8 @@ set(SOURCES
     entities/event_generators/FreeSpeciesChange.hpp
     entities/event_generators/Polymerization.cpp
     entities/event_generators/Polymerization.hpp
+    entities/event_generators/TipSpeciesChange.cpp
+    entities/event_generators/TipSpeciesChange.hpp
 
     entities/measurements/Concentration.hpp
     entities/measurements/SingleValueBase.hpp
