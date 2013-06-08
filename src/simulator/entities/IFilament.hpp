@@ -14,12 +14,13 @@ public:
     virtual ~IFilament() {}
 
     // query filament status
-    virtual uint64_t species_count(
+    virtual uint64_t const species_count(
             species_t const& species) const = 0;
-    virtual uint64_t boundary_count(
+    virtual uint64_t const boundary_count(
             species_t const& pointed_species,
             species_t const& barbed_species) const = 0;
-    virtual uint64_t length() const = 0;
+    virtual uint64_t const boundary_count() const = 0;
+    virtual uint64_t const length() const = 0;
 
     // query tip states
     virtual species_t const peek_barbed() const = 0;

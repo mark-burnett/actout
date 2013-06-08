@@ -71,18 +71,21 @@ private:
 
 public:
     SingleStrandFilament(uint64_t const& num_species,
-        std::vector<species_t>::iterator begin,
-        std::vector<species_t>::iterator end);
+        std::vector<species_t>::const_iterator begin,
+        std::vector<species_t>::const_iterator end);
 
     SingleStrandFilament(uint64_t const& num_species,
             uint64_t const& number,
             species_t const& species);
 
-    uint64_t species_count(
+    uint64_t const species_count(
             species_t const& species) const;
-    uint64_t boundary_count(species_t const& pointed_species,
+    uint64_t const boundary_count(species_t const& pointed_species,
             species_t const& barbed_species) const;
-    uint64_t length() const;
+    uint64_t const boundary_count() const {
+        return segments_.size() - 1;
+    }
+    uint64_t const length() const;
 
     species_t const peek_barbed() const;
     species_t const peek_pointed() const;

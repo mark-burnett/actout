@@ -27,13 +27,14 @@ SingleStrandFilament::initialize_counts(uint64_t const& num_species) {
 
 
 SingleStrandFilament::SingleStrandFilament(uint64_t const& num_species,
-        std::vector<species_t>::iterator begin,
-        std::vector<species_t>::iterator end) {
+        std::vector<species_t>::const_iterator begin,
+        std::vector<species_t>::const_iterator end) {
     initialize_counts(num_species);
 
     while (begin != end) {
         auto boundary = std::adjacent_find(begin, end,
                 std::not_equal_to<species_t const>());
+
         if (boundary != end) {
             ++boundary;
         }
@@ -61,20 +62,20 @@ SingleStrandFilament::SingleStrandFilament(uint64_t const& num_species,
 }
 
 
-uint64_t
+uint64_t const
 SingleStrandFilament::species_count(
         species_t const& species) const {
     return species_counts_[species];
 }
 
-uint64_t
+uint64_t const
 SingleStrandFilament::boundary_count(
         species_t const& pointed_species,
         species_t const& barbed_species) const {
     return boundary_counts_[pointed_species][barbed_species];
 }
 
-uint64_t
+uint64_t const
 SingleStrandFilament::length() const {
     return length_;
 }
