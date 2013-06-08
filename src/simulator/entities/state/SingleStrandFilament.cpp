@@ -179,6 +179,10 @@ void
 SingleStrandFilament::update_subunit(uint64_t instance_number,
         species_t const& old_species,
         species_t const& new_species) {
+    if (old_species == new_species) {
+        throw IllegalFilamentUpdate();
+    }
+
     if (instance_number >= species_counts_[old_species]) {
         throw IllegalSpeciesIndex();
     }
@@ -202,6 +206,10 @@ SingleStrandFilament::update_boundary(uint64_t instance_number,
         species_t const& old_pointed_species,
         species_t const& old_barbed_species,
         species_t const& new_barbed_species) {
+    if (old_barbed_species == new_barbed_species) {
+        throw IllegalFilamentUpdate();
+    }
+
     if (instance_number >=
             boundary_counts_[old_pointed_species][old_barbed_species]) {
         throw IllegalBoundaryIndex();

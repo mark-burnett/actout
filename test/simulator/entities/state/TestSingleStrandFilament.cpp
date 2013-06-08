@@ -215,6 +215,19 @@ TEST_F(SingleStrandFilamentTest, pop_pointed_Empty) {
 }
 
 
+TEST_F(SingleStrandFilamentTest, update_subunit_error) {
+    uint64_t const size = 5;
+    species_t const old_species = 0;
+    species_t const new_species = 0;
+
+    auto values = initialize_filament(2, old_species, size);
+
+    EXPECT_THROW(filament->update_subunit(3, old_species, new_species),
+            IllegalFilamentUpdate);
+
+    validate_filament(values);
+}
+
 TEST_F(SingleStrandFilamentTest, update_subunit) {
     uint64_t const size = 5;
     species_t const old_species = 0;
@@ -286,6 +299,18 @@ TEST_F(SingleStrandFilamentTest, update_subunit_thrice) {
     values[2] = new_species;
     values[3] = new_species;
     values[4] = new_species;
+
+    validate_filament(values);
+}
+
+TEST_F(SingleStrandFilamentTest, update_boundary_error) {
+    std::vector<species_t> values;
+    values += 0, 1, 0, 0, 2, 1, 0, 1;
+
+    initialize_filament(3, values);
+
+    EXPECT_THROW(filament->update_boundary(1, 0, 1, 1),
+            IllegalFilamentUpdate);
 
     validate_filament(values);
 }
