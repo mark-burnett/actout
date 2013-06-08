@@ -183,7 +183,6 @@ SingleStrandFilament::update_subunit(uint64_t instance_number,
         throw IllegalSpeciesIndex();
     }
 
-    // XXX fracture should be responsible for updating the species_counts_
     --species_counts_[old_species];
     ++species_counts_[new_species];
 
@@ -207,38 +206,31 @@ SingleStrandFilament::update_boundary(uint64_t instance_number,
             boundary_counts_[old_pointed_species][old_barbed_species]) {
         throw IllegalBoundaryIndex();
     }
-    if (length_ > 0) {
-        // XXX fracture should be responsible for updating the species_counts_
-//        --species_counts_[old_barbed_species];
-//        ++species_counts_[new_barbed_species];
+    --species_counts_[old_barbed_species];
+    ++species_counts_[new_barbed_species];
 
-        uint64_t count = 0;
+    uint64_t count = 0;
 
-        auto barbed_segment = segments_.begin();
-        auto pointed_segment = segments_.begin();
-        ++barbed_segment;
+    auto pointed_segment = segments_.begin();
+    auto barbed_segment = std::next(pointed_segment);
 
-        if (segments_.end() == barbed_segment) {
-            throw BoundaryUpdateSmallFilament();
-        }
+    if (segments_.end() == barbed_segment) {
+        throw BoundaryUpdateSmallFilament();
+    }
 
-        while (barbed_segment != segments_.end()) {
-            if (old_pointed_species == pointed_segment->species &&
-                    old_barbed_species == barbed_segment->species) {
-                if (instance_number == count) {
-                    // When updating boundaries,
-                    // we always choose the left-most protomer.
-//                    fracture_pointed_edge(barbed_segment, new_barbed_species);
-                    fracture_segment(barbed_segment, 0, new_barbed_species);
-                    return;
-                }
-                ++count;
+    while (barbed_segment != segments_.end()) {
+        if (old_pointed_species == pointed_segment->species &&
+                old_barbed_species == barbed_segment->species) {
+            if (instance_number == count) {
+                // When updating boundaries,
+                // we always choose the left-most protomer.
+                fracture_segment(barbed_segment, 0, new_barbed_species);
+                return;
             }
-            ++pointed_segment;
-            ++barbed_segment;
+            ++count;
         }
-    } else {
-        throw BoundaryUpdateEmptyFilament();
+        ++pointed_segment;
+        ++barbed_segment;
     }
 }
 
@@ -318,8 +310,6 @@ SingleStrandFilament::fracture_unitary_segment(
     auto pn = bounded_prev(segment, segments_);
     auto bn = std::next(segment);
 
-    --species_counts_[old_species];
-    ++species_counts_[new_species];
     if (segments_.end() != pn) {
         --boundary_counts_[pn->species][old_species];
     }
