@@ -20,6 +20,6 @@ before_script:
     - mkdir build
     - cd build
     - UNIT_TEST_VALGRIND=1 cmake ..
-    - make
+    - make VERBOSE=1
 script:
     - make test
