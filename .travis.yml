@@ -12,14 +12,14 @@ notifications:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install cmake
+    - sudo apt-get install cmake libgtest-dev valgrind
 install:
-    - sudo apt-get install libprotobuf-dev protobuf-compiler libboost-dev libgtest-dev valgrind
+    - sudo apt-get install libprotobuf-dev protobuf-compiler libboost-dev
 
 before_script:
     - mkdir build
     - cd build
-    - UNIT_TEST_VALGRIND=1 cmake ..
+    - UNIT_TEST_VALGRIND=1 cmake .. -DCMAKE_BUILD_TYPE=debug
     - make VERBOSE=1
 script:
     - make test
