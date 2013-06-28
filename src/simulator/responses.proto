@@ -1,7 +1,0 @@
-package responses;
-
-message OK {
-}
-
-message Pong {
-}

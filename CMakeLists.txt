@@ -18,6 +18,9 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 enable_testing(true)
 
-add_projects(src)
-add_projects(test)
+include_directories("src/lib")
+
+add_projects(src/exe)
+add_projects(src/lib)
+add_projects(test/lib)
 add_subdirectory(doc)
