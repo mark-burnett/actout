@@ -29,7 +29,7 @@ if(NOT GTEST_FOUND)
             ${CMAKE_BINARY_DIR}/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}
         )
         set(GTEST_BOTH_LIBRARIES
-            $GTEST_LIBRARY
+            ${GTEST_LIBRARY}
             ${CMAKE_BINARY_DIR}/gtest/${CMAKE_FIND_LIBRARY_PREFIXES}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}
         )
     else()
