@@ -5,13 +5,12 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 project(actout)
 
 
-find_package(Boost REQUIRED)
 find_package(Protobuf REQUIRED)
 
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(CompilerConfig)
-include(GoogleTest)
+include(TestHelper)
 include(ProjectHelper)
 
 
