@@ -3,7 +3,8 @@
 #include "simulator/exceptions.hpp"
 
 #include <boost/assign/std/vector.hpp>
-#include <gtest/gtest.h>
+#include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/unit_test.hpp>
 #include <iterator>
 #include <map>
 #include <memory>
@@ -16,8 +17,7 @@ using namespace boost::assign;
 using namespace simulator;
 using namespace simulator::state;
 
-class SingleStrandFilamentTest : public ::testing::Test {
-protected:
+struct SingleStrandFilamentTest {
     std::unique_ptr<SingleStrandFilament> filament;
 
     void initialize_filament(uint64_t const& num_species,
@@ -42,7 +42,7 @@ protected:
 
 
     void validate_filament(std::vector<species_t> const& expected_values) {
-        EXPECT_EQ(expected_values.size(), filament->length());
+        BOOST_CHECK_EQUAL(expected_values.size(), filament->length());
 
         validate_tips(expected_values);
         validate_filament_values(expected_values);
@@ -52,8 +52,8 @@ protected:
 
     void validate_tips(std::vector<species_t> const& expected_values) {
         if (!expected_values.empty()) {
-            EXPECT_EQ(expected_values.back(), filament->peek_barbed());
-            EXPECT_EQ(expected_values.front(), filament->peek_pointed());
+            BOOST_CHECK_EQUAL(expected_values.back(), filament->peek_barbed());
+            BOOST_CHECK_EQUAL(expected_values.front(), filament->peek_pointed());
         }
     }
 
@@ -61,8 +61,7 @@ protected:
             std::vector<species_t> const& expected_values) {
         auto iter = filament->begin();
         for (uint64_t i = 0; i < expected_values.size(); ++i) {
-            EXPECT_EQ(expected_values[i], *iter)
-                << "Element " << i << " differs.";
+            BOOST_CHECK_EQUAL(expected_values[i], *iter);
             ++iter;
         }
     }
@@ -80,8 +79,7 @@ protected:
         }
 
         for (auto const& i : expected_species_counts) {
-            EXPECT_EQ(i.second, filament->species_count(i.first))
-                << "Species count for " << i.first << " differs.";
+            BOOST_CHECK_EQUAL(i.second, filament->species_count(i.first));
         }
     }
 
@@ -107,17 +105,20 @@ protected:
         uint64_t total_boundary_counts = 0;
         for (auto const& pn : expected_boundary_counts) {
             for (auto const& bn : pn.second) {
-                EXPECT_EQ(bn.second,
+                BOOST_CHECK_EQUAL(bn.second,
                         filament->boundary_count(pn.first, bn.first));
                 total_boundary_counts += bn.second;
             }
         }
 
-        EXPECT_EQ(total_boundary_counts, filament->boundary_count());
+        BOOST_CHECK_EQUAL(total_boundary_counts, filament->boundary_count());
     }
 };
 
-TEST_F(SingleStrandFilamentTest, IteratorConstructor) {
+
+BOOST_FIXTURE_TEST_SUITE(SingleStrand, SingleStrandFilamentTest)
+
+BOOST_AUTO_TEST_CASE(IteratorConstructor) {
     std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
     initialize_filament(3, values);
@@ -125,7 +126,7 @@ TEST_F(SingleStrandFilamentTest, IteratorConstructor) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, NumberSpeciesConstructor) {
+BOOST_AUTO_TEST_CASE(NumberSpeciesConstructor) {
     uint64_t const size = 26;
     species_t const species = 0;
 
@@ -134,7 +135,7 @@ TEST_F(SingleStrandFilamentTest, NumberSpeciesConstructor) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, append_barbed) {
+BOOST_AUTO_TEST_CASE(append_barbed) {
     uint64_t const size = 5;
     species_t const species = 0;
 
@@ -146,7 +147,7 @@ TEST_F(SingleStrandFilamentTest, append_barbed) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, append_pointed) {
+BOOST_AUTO_TEST_CASE(append_pointed) {
     uint64_t const size = 5;
     species_t const species = 0;
 
@@ -157,7 +158,7 @@ TEST_F(SingleStrandFilamentTest, append_pointed) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, pop_barbed) {
+BOOST_AUTO_TEST_CASE(pop_barbed) {
     uint64_t const size = 5;
     species_t const species = 0;
 
@@ -166,19 +167,19 @@ TEST_F(SingleStrandFilamentTest, pop_barbed) {
     values.pop_back();
     {
         auto s = filament->pop_barbed();
-        EXPECT_EQ(species, s);
+        BOOST_CHECK_EQUAL(species, s);
     }
     validate_filament(values);
 
     {
         filament->append_barbed(1);
         auto s = filament->pop_barbed();
-        EXPECT_EQ(1, s);
+        BOOST_CHECK_EQUAL(1, s);
     }
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, pop_pointed) {
+BOOST_AUTO_TEST_CASE(pop_pointed) {
     uint64_t const size = 5;
     species_t const species = 0;
 
@@ -188,47 +189,47 @@ TEST_F(SingleStrandFilamentTest, pop_pointed) {
 
     {
         auto s = filament->pop_pointed();
-        EXPECT_EQ(0, s);
+        BOOST_CHECK_EQUAL(0, s);
     }
     validate_filament(values);
 
     {
         filament->append_pointed(1);
         auto s = filament->pop_pointed();
-        EXPECT_EQ(1, s);
+        BOOST_CHECK_EQUAL(1, s);
     }
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, pop_barbed_Empty) {
+BOOST_AUTO_TEST_CASE(pop_barbed_Empty) {
     auto values = initialize_filament(2, 0, 0);
 
-    EXPECT_THROW(filament->pop_barbed(), DepolymerizingEmptyFilament);
+    BOOST_CHECK_THROW(filament->pop_barbed(), DepolymerizingEmptyFilament);
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, pop_pointed_Empty) {
+BOOST_AUTO_TEST_CASE(pop_pointed_Empty) {
     auto values = initialize_filament(2, 0, 0);
 
-    EXPECT_THROW(filament->pop_pointed(), DepolymerizingEmptyFilament);
+    BOOST_CHECK_THROW(filament->pop_pointed(), DepolymerizingEmptyFilament);
     validate_filament(values);
 }
 
 
-TEST_F(SingleStrandFilamentTest, update_subunit_error) {
+BOOST_AUTO_TEST_CASE(update_subunit_error) {
     uint64_t const size = 5;
     species_t const old_species = 0;
     species_t const new_species = 0;
 
     auto values = initialize_filament(2, old_species, size);
 
-    EXPECT_THROW(filament->update_subunit(3, old_species, new_species),
+    BOOST_CHECK_THROW(filament->update_subunit(3, old_species, new_species),
             IllegalFilamentUpdate);
 
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_subunit) {
+BOOST_AUTO_TEST_CASE(update_subunit) {
     uint64_t const size = 5;
     species_t const old_species = 0;
     species_t const new_species = 1;
@@ -241,7 +242,7 @@ TEST_F(SingleStrandFilamentTest, update_subunit) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_subunit_twice_same_position) {
+BOOST_AUTO_TEST_CASE(update_subunit_twice_same_position) {
     uint64_t const size = 5;
     species_t const old_species = 0;
     species_t const intermediate_species = 1;
@@ -256,7 +257,7 @@ TEST_F(SingleStrandFilamentTest, update_subunit_twice_same_position) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_subunit_twice_pointed_to_barbed) {
+BOOST_AUTO_TEST_CASE(update_subunit_twice_pointed_to_barbed) {
     uint64_t const size = 7;
     species_t const old_species = 0;
     species_t const new_species = 1;
@@ -271,7 +272,7 @@ TEST_F(SingleStrandFilamentTest, update_subunit_twice_pointed_to_barbed) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_subunit_twice_barbed_to_pointed) {
+BOOST_AUTO_TEST_CASE(update_subunit_twice_barbed_to_pointed) {
     uint64_t const size = 7;
     species_t const old_species = 0;
     species_t const new_species = 1;
@@ -286,7 +287,7 @@ TEST_F(SingleStrandFilamentTest, update_subunit_twice_barbed_to_pointed) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_subunit_thrice) {
+BOOST_AUTO_TEST_CASE(update_subunit_thrice) {
     uint64_t const size = 7;
     species_t const old_species = 0;
     species_t const new_species = 1;
@@ -303,19 +304,19 @@ TEST_F(SingleStrandFilamentTest, update_subunit_thrice) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_boundary_error) {
+BOOST_AUTO_TEST_CASE(update_boundary_error) {
     std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
     initialize_filament(3, values);
 
-    EXPECT_THROW(filament->update_boundary(1, 0, 1, 1),
+    BOOST_CHECK_THROW(filament->update_boundary(1, 0, 1, 1),
             IllegalFilamentUpdate);
 
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_boundary) {
+BOOST_AUTO_TEST_CASE(update_boundary) {
     std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
@@ -327,7 +328,7 @@ TEST_F(SingleStrandFilamentTest, update_boundary) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, update_boundary_twice) {
+BOOST_AUTO_TEST_CASE(update_boundary_twice) {
     std::vector<species_t> values;
     values += 0, 1, 0, 0, 2, 1, 0, 1;
 
@@ -357,7 +358,7 @@ TEST_F(SingleStrandFilamentTest, update_boundary_twice) {
 //          no merge (1 new boundary)
 // -----------------------------------------------------------------------------
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_only_segment) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_only_segment) {
     auto values = initialize_filament(3, 0, 1);
 
     filament->update_subunit(0, 0, 1);
@@ -366,7 +367,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_only_segment) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_away_no_merge) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_away_no_merge) {
     std::vector<species_t> values;
     values += 0, 1, 0;
 
@@ -378,7 +379,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_away_no_merge) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_away_merge_left) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_away_merge_left) {
     std::vector<species_t> values;
     values += 2, 1, 0;
 
@@ -390,7 +391,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_away_merge_left) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_away_merge_right) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_away_merge_right) {
     std::vector<species_t> values;
     values += 0, 1, 2;
 
@@ -402,7 +403,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_away_merge_right) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_away_merge_both) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_away_merge_both) {
     std::vector<species_t> values;
     values += 2, 1, 2;
 
@@ -414,7 +415,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_away_merge_both) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_barbed_no_merge) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_barbed_no_merge) {
     std::vector<species_t> values;
     values += 0, 1;
 
@@ -427,7 +428,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_barbed_no_merge) {
 }
 
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_barbed_merge) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_barbed_merge) {
     std::vector<species_t> values;
     values += 2, 1;
 
@@ -439,7 +440,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_barbed_merge) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_pointed_no_merge) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_pointed_no_merge) {
     std::vector<species_t> values;
     values += 1, 0;
 
@@ -452,7 +453,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_pointed_no_merge) {
 }
 
 
-TEST_F(SingleStrandFilamentTest, fracture_unitary_pointed_merge) {
+BOOST_AUTO_TEST_CASE(fracture_unitary_pointed_merge) {
     std::vector<species_t> values;
     values += 1, 2;
 
@@ -476,7 +477,7 @@ TEST_F(SingleStrandFilamentTest, fracture_unitary_pointed_merge) {
 //          near filament X end (1 new boundary)
 // -----------------------------------------------------------------------------
 
-TEST_F(SingleStrandFilamentTest, fracture_middle) {
+BOOST_AUTO_TEST_CASE(fracture_middle) {
     std::vector<species_t> values;
     values += 0, 0, 0;
 
@@ -488,7 +489,7 @@ TEST_F(SingleStrandFilamentTest, fracture_middle) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_right_away_match) {
+BOOST_AUTO_TEST_CASE(fracture_right_away_match) {
     std::vector<species_t> values;
     values += 0, 0, 1;
 
@@ -500,7 +501,7 @@ TEST_F(SingleStrandFilamentTest, fracture_right_away_match) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_right_away_not_match) {
+BOOST_AUTO_TEST_CASE(fracture_right_away_not_match) {
     std::vector<species_t> values;
     values += 0, 0, 1;
 
@@ -512,7 +513,7 @@ TEST_F(SingleStrandFilamentTest, fracture_right_away_not_match) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_left_away_match) {
+BOOST_AUTO_TEST_CASE(fracture_left_away_match) {
     std::vector<species_t> values;
     values += 1, 0, 0;
 
@@ -524,7 +525,7 @@ TEST_F(SingleStrandFilamentTest, fracture_left_away_match) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_left_away_not_match) {
+BOOST_AUTO_TEST_CASE(fracture_left_away_not_match) {
     std::vector<species_t> values;
     values += 1, 0, 0;
 
@@ -536,7 +537,7 @@ TEST_F(SingleStrandFilamentTest, fracture_left_away_not_match) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_right_near) {
+BOOST_AUTO_TEST_CASE(fracture_right_near) {
     std::vector<species_t> values;
     values += 0, 0;
 
@@ -548,7 +549,7 @@ TEST_F(SingleStrandFilamentTest, fracture_right_near) {
     validate_filament(values);
 }
 
-TEST_F(SingleStrandFilamentTest, fracture_left_near) {
+BOOST_AUTO_TEST_CASE(fracture_left_near) {
     std::vector<species_t> values;
     values += 0, 0;
 
@@ -559,3 +560,5 @@ TEST_F(SingleStrandFilamentTest, fracture_left_near) {
 
     validate_filament(values);
 }
+
+BOOST_AUTO_TEST_SUITE_END()

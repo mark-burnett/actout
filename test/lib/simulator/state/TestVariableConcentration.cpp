@@ -1,18 +1,19 @@
 #include "simulator/state/VariableConcentration.hpp"
 
-#include <gtest/gtest.h>
+#include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/unit_test.hpp>
 
 
-TEST(Concentrations, VariableConcentration) {
+BOOST_AUTO_TEST_CASE(VariableConcentration) {
     simulator::state::VariableConcentration c(4.8, 1 / 1.2);
 
-    EXPECT_DOUBLE_EQ(4.8, c.value());
+    BOOST_CHECK_CLOSE(4.8, c.value(), 0.00001);
 
     c.remove_monomer();
-    EXPECT_DOUBLE_EQ(3.6, c.value());
+    BOOST_CHECK_CLOSE(3.6, c.value(), 0.00001);
 
     c.add_monomer();
     c.add_monomer();
 
-    EXPECT_DOUBLE_EQ(6, c.value());
+    BOOST_CHECK_CLOSE(6, c.value(), 0.00001);
 }
