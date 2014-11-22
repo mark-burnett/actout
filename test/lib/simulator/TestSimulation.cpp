@@ -11,7 +11,8 @@
 #include "simulator/state/FixedConcentration.hpp"
 #include "simulator/state/SingleStrandFilament.hpp"
 
-#include <gtest/gtest.h>
+#include <boost/assign/std/vector.hpp>
+#include <boost/test/unit_test.hpp>
 #include <inttypes.h>
 
 using namespace simulator;
@@ -39,14 +40,12 @@ public:
     }
 };
 
-class SimpleSimulation : public ::testing::Test {
-public:
+struct SimpleSimulation {
     void run_simulation() {
         simulation->execute(&state, measurements, rng.get());
     }
 
-protected:
-    virtual void SetUp() {
+    SimpleSimulation() {
         std::vector<species_t> values(100);
         state.filaments.push_back(std::move(
                     std::unique_ptr<SingleStrandFilament>(
@@ -62,7 +61,6 @@ protected:
         rng = std::unique_ptr<MockRNG>(new MockRNG());
     }
 
-protected:
     std::vector<std::unique_ptr<IEndCondition const> > end_conditions;
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
 
@@ -74,15 +72,17 @@ protected:
 };
 
 
-TEST_F(SimpleSimulation, get_initial_modifications) {
+BOOST_FIXTURE_TEST_SUITE(SimTest, SimpleSimulation)
+
+BOOST_AUTO_TEST_CASE(get_initial_modifications) {
     auto modifications = simulation->get_initial_modifications(&state);
 
-    ASSERT_EQ(1, modifications.created_filaments.size());
-    ASSERT_EQ(1, modifications.modified_concentrations.size());
+    BOOST_CHECK_EQUAL(1, modifications.created_filaments.size());
+    BOOST_CHECK_EQUAL(1, modifications.modified_concentrations.size());
 }
 
 
-TEST_F(SimpleSimulation, polymerization) {
+BOOST_AUTO_TEST_CASE(polymerization) {
     end_conditions.push_back(std::move(
                 std::unique_ptr<EventCount>(
                     new EventCount(10))));
@@ -93,6 +93,8 @@ TEST_F(SimpleSimulation, polymerization) {
 
     run_simulation();
 
-    ASSERT_EQ(11, state.time);
-    ASSERT_EQ(110, state.filaments[0]->length());
+    BOOST_REQUIRE_EQUAL(11, state.time);
+    BOOST_CHECK_EQUAL(110, state.filaments[0]->length());
 }
+
+BOOST_AUTO_TEST_SUITE_END()
