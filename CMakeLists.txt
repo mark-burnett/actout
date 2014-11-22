@@ -5,6 +5,7 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 project(actout)
 
 
+find_package(Boost REQUIRED)
 find_package(Protobuf REQUIRED)
 
 
@@ -18,7 +19,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 enable_testing(true)
 
-include_directories("src/lib")
+include_directories("src/lib" ${Boost_INCLUDE_DIR})
 
 add_projects(src/exe)
 add_projects(src/lib)
