@@ -5,7 +5,8 @@
 #include "simulator/state/VariableConcentration.hpp"
 
 #include <boost/assign/std/vector.hpp>
-#include <gtest/gtest.h>
+#include <boost/test/floating_point_comparison.hpp>
+#include <boost/test/unit_test.hpp>
 #include <memory>
 #include <vector>
 
@@ -14,9 +15,8 @@ using namespace boost::assign;
 
 using namespace simulator;
 
-class TestFreeSpeciesChange : public testing::Test {
-protected:
-    virtual void SetUp() {
+struct TestFreeSpeciesChange {
+    TestFreeSpeciesChange() {
         s.concentrations.push_back(std::move(
                     std::unique_ptr<state::VariableConcentration>(
                         new state::VariableConcentration(6, 1))));
@@ -28,7 +28,7 @@ protected:
                         new state::VariableConcentration(0, 1))));
     }
 
-    virtual void TearDown() {
+    ~TestFreeSpeciesChange() {
         s.concentrations.clear();
     }
 
@@ -36,40 +36,44 @@ protected:
 };
 
 
-TEST_F(TestFreeSpeciesChange, Single) {
+BOOST_FIXTURE_TEST_SUITE(FreeSpecChange, TestFreeSpeciesChange)
+
+BOOST_AUTO_TEST_CASE(Single) {
     std::vector<species_t> new_species(1, 1);
     event_generators::FreeSpeciesChange eg(0, new_species, 1);
 
     StateModifications const no_modifications;
 
-    EXPECT_DOUBLE_EQ(6, eg.rate(&s, no_modifications));
+    BOOST_CHECK_CLOSE(6, eg.rate(&s, no_modifications), 0.00001);
     {
         auto sm = eg.perform_event(&s, 3);
 
-        EXPECT_EQ(0, sm.modified_filaments.size());
-        EXPECT_EQ(2, sm.modified_concentrations.size());
-        EXPECT_EQ(0, sm.modified_concentrations[0]);
-        EXPECT_EQ(1, sm.modified_concentrations[1]);
+        BOOST_CHECK_EQUAL(0, sm.modified_filaments.size());
+        BOOST_CHECK_EQUAL(2, sm.modified_concentrations.size());
+        BOOST_CHECK_EQUAL(0, sm.modified_concentrations[0]);
+        BOOST_CHECK_EQUAL(1, sm.modified_concentrations[1]);
     }
-    EXPECT_DOUBLE_EQ(5, eg.rate(&s, no_modifications));
+    BOOST_CHECK_CLOSE(5, eg.rate(&s, no_modifications), 0.00001);
 }
 
-TEST_F(TestFreeSpeciesChange, Byproduct) {
+BOOST_AUTO_TEST_CASE(Byproduct) {
     std::vector<species_t> new_species;
     new_species += 1, 2;
     event_generators::FreeSpeciesChange eg(0, new_species, 1);
 
     StateModifications const no_modifications;
 
-    EXPECT_DOUBLE_EQ(6, eg.rate(&s, no_modifications));
+    BOOST_CHECK_CLOSE(6, eg.rate(&s, no_modifications), 0.00001);
     {
         auto sm = eg.perform_event(&s, 3);
 
-        EXPECT_EQ(0, sm.modified_filaments.size());
-        EXPECT_EQ(3, sm.modified_concentrations.size());
-        EXPECT_EQ(0, sm.modified_concentrations[0]);
-        EXPECT_EQ(1, sm.modified_concentrations[1]);
-        EXPECT_EQ(2, sm.modified_concentrations[2]);
+        BOOST_CHECK_EQUAL(0, sm.modified_filaments.size());
+        BOOST_CHECK_EQUAL(3, sm.modified_concentrations.size());
+        BOOST_CHECK_EQUAL(0, sm.modified_concentrations[0]);
+        BOOST_CHECK_EQUAL(1, sm.modified_concentrations[1]);
+        BOOST_CHECK_EQUAL(2, sm.modified_concentrations[2]);
     }
-    EXPECT_DOUBLE_EQ(5, eg.rate(&s, no_modifications));
+    BOOST_CHECK_CLOSE(5, eg.rate(&s, no_modifications), 0.00001);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
