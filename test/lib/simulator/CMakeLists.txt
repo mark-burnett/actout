@@ -6,5 +6,5 @@ include_directories(${GTEST_INCLUDE_DIRS})
 def_test(Simulation)
 
 #add_subdirectory(event_generators)
-#add_subdirectory(measurements)
+add_subdirectory(measurements)
 add_subdirectory(state)

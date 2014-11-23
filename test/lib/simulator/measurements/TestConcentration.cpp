@@ -3,7 +3,7 @@
 #include "simulator/state/VariableConcentration.hpp"
 
 #include <boost/assign/std/vector.hpp>
-#include <gtest/gtest.h>
+#include <boost/test/unit_test.hpp>
 #include <inttypes.h>
 #include <vector>
 
@@ -13,7 +13,7 @@ using namespace boost::assign;
 using namespace simulator;
 
 
-TEST(ConcentrationMeasurment, Basic) {
+BOOST_AUTO_TEST_CASE(Basic) {
     State s;
     s.concentrations.push_back(std::move(
                 std::unique_ptr<state::VariableConcentration>(
@@ -28,7 +28,9 @@ TEST(ConcentrationMeasurment, Basic) {
 
     std::vector<double> expected_values;
     expected_values += 2, 4, 6, 8, 10, 12;
-    ASSERT_EQ(expected_values, m.samples);
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+            expected_values.begin(), expected_values.end(),
+            m.samples.begin(), m.samples.end());
 
     for (uint64_t i = 0; i < 6; ++i) {
         s.time = 5 + i;
@@ -37,5 +39,7 @@ TEST(ConcentrationMeasurment, Basic) {
     }
 
     expected_values += 12, 11, 10, 9, 8;
-    ASSERT_EQ(expected_values, m.samples);
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+            expected_values.begin(), expected_values.end(),
+            m.samples.begin(), m.samples.end());
 }

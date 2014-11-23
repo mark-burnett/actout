@@ -4,7 +4,7 @@
 #include "simulator/state/SingleStrandFilament.hpp"
 
 #include <boost/assign/std/vector.hpp>
-#include <gtest/gtest.h>
+#include <boost/test/unit_test.hpp>
 #include <inttypes.h>
 #include <vector>
 
@@ -14,7 +14,7 @@ using namespace boost::assign;
 using namespace simulator;
 
 
-TEST(ConcentrationMeasurment, Basic) {
+BOOST_AUTO_TEST_CASE(Basic) {
     std::vector<species_t> initial_values(10, 0);
 
     State s;
@@ -37,7 +37,9 @@ TEST(ConcentrationMeasurment, Basic) {
 
     std::vector<double> expected_values;
     expected_values += 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15;
-    ASSERT_EQ(expected_values, m.samples);
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+            expected_values.begin(), expected_values.end(),
+            m.samples.begin(), m.samples.end());
 
     for (uint64_t i = 0; i < 6; ++i) {
         s.time = 10 + i;
@@ -46,5 +48,7 @@ TEST(ConcentrationMeasurment, Basic) {
     }
 
     expected_values += 15, 14.5, 14, 13.5, 13;
-    ASSERT_EQ(expected_values, m.samples);
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+            expected_values.begin(), expected_values.end(),
+            m.samples.begin(), m.samples.end());
 }
