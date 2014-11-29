@@ -14,11 +14,11 @@ namespace simulator {
 
 class Simulation {
 private:
-    typedef std::vector<EndCondition> ec_container;
     typedef std::vector<std::unique_ptr<IEventGenerator> > eg_container;
 
 public:
-    Simulation(ec_container& end_conditions, eg_container& event_generators)
+    Simulation(std::vector<EndCondition> end_conditions,
+            eg_container& event_generators)
         : end_conditions_(end_conditions),
         event_generators_(event_generators) {};
 
@@ -35,7 +35,7 @@ private:
             std::vector<double> const& accumulated_rates, IRNG* rng) const;
 
 private:
-    ec_container& end_conditions_;
+    std::vector<EndCondition> end_conditions_;
     eg_container& event_generators_;
 };
 

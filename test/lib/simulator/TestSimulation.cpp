@@ -42,6 +42,9 @@ public:
 
 struct SimpleSimulation {
     void run_simulation() {
+        simulation = std::unique_ptr<Simulation>(
+                new Simulation(end_conditions, event_generators));
+
         simulation->execute(&state, measurements, rng.get());
     }
 
@@ -54,10 +57,6 @@ struct SimpleSimulation {
         state.concentrations.push_back(std::move(
                     std::unique_ptr<FixedConcentration>(
                         new FixedConcentration(6))));
-
-        simulation = std::unique_ptr<Simulation>(
-                new Simulation(end_conditions, event_generators));
-
         rng = std::unique_ptr<MockRNG>(new MockRNG());
     }
 
