@@ -15,7 +15,7 @@ FixedRatePolymerizationBase::rate(State const* state,
 
 StateModifications
 FixedRatePolymerizationBase::perform_event(State* state,
-        double const& random_number) const {
+        double random_number) const {
     uint64_t i = random_number / (
             rate_ * state->concentrations[species_]->value());
     append_species(state->filaments[i].get());

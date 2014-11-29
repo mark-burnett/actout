@@ -11,15 +11,15 @@ namespace simulator {
 namespace event_generators {
 
 
-class FixedRatePolymerizationBase : public IEventGenerator {
+class FixedRatePolymerizationBase {
 public:
     FixedRatePolymerizationBase(species_t const& species,
             double const& rate) : species_(species), rate_(rate) {}
+    virtual ~FixedRatePolymerizationBase() {}
 
     double rate(State const* state, StateModifications const& modifications);
 
-    StateModifications perform_event(State* state,
-            double const& random_number) const;
+    StateModifications perform_event(State* state, double random_number) const;
 
 protected:
     species_t const species_;

@@ -3,20 +3,25 @@
 #include "simulator/State.hpp"
 #include "simulator/StateModifications.hpp"
 
+#include <boost/mpl/vector.hpp>
+#include <boost/type_erasure/any.hpp>
+#include <boost/type_erasure/builtin.hpp>
+#include <boost/type_erasure/member.hpp>
+
+namespace mpl = boost::mpl;
+using namespace boost::type_erasure;
+
+
+BOOST_TYPE_ERASURE_MEMBER((has_rate), rate, 2)
+BOOST_TYPE_ERASURE_MEMBER((has_perform_event), perform_event, 2)
+
 
 namespace simulator {
 
-
-class IEventGenerator {
-public:
-    virtual ~IEventGenerator() {}
-
-    virtual double rate(State const* state,
-            StateModifications const& modifications) = 0;
-
-    virtual StateModifications perform_event(State* state,
-            double const& random_number) const = 0;
-};
-
+typedef any<mpl::vector<
+    has_rate<double(State const*, StateModifications const&)>,
+    has_perform_event<StateModifications(State*, double), _self const>,
+    copy_constructible<>
+> > EventGenerator;
 
 } // namespace simulator

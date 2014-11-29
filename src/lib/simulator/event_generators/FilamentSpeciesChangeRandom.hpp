@@ -13,7 +13,7 @@ namespace simulator {
 namespace event_generators {
 
 
-class FilamentSpeciesChangeRandom : public IEventGenerator {
+class FilamentSpeciesChangeRandom {
 public:
     FilamentSpeciesChangeRandom(species_t const& old_species,
             species_t const& new_species, double const& rate)
@@ -22,8 +22,7 @@ public:
 
     double rate(State const* state, StateModifications const& modifications);
 
-    StateModifications perform_event(State* state,
-            double const& random_number) const;
+    StateModifications perform_event(State* state, double random_number) const;
 
 private:
     void update_cache(State const* state,

@@ -61,7 +61,7 @@ struct SimpleSimulation {
     }
 
     std::vector<EndCondition> end_conditions;
-    std::vector<std::unique_ptr<IEventGenerator> > event_generators;
+    std::vector<EventGenerator> event_generators;
 
     State state;
     std::vector<Measurement> measurements;
@@ -84,9 +84,7 @@ BOOST_AUTO_TEST_CASE(get_initial_modifications) {
 BOOST_AUTO_TEST_CASE(polymerization) {
     end_conditions.push_back(EventCount(10));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndPolymerization>(
-                    new BarbedEndPolymerization(0, 3))));
+    event_generators.push_back(BarbedEndPolymerization(0, 3));
 
     run_simulation();
 

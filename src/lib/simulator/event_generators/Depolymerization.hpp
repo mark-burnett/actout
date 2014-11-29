@@ -11,15 +11,16 @@
 namespace simulator {
 namespace event_generators {
 
-class FixedRateDepolymerization : public IEventGenerator {
+class FixedRateDepolymerization {
 public:
     FixedRateDepolymerization(species_t const& species,
             double const& rate) : species_(species), rate_(rate) {}
+    virtual ~FixedRateDepolymerization() {}
 
     double rate(State const* state, StateModifications const& modifications);
 
     StateModifications perform_event(State* state,
-            double const& random_number) const;
+            double random_number) const;
 
 protected:
     species_t const species_;

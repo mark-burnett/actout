@@ -17,7 +17,7 @@ FilamentSpeciesChangeRandom::rate(State const* state,
 
 StateModifications
 FilamentSpeciesChangeRandom::perform_event(State* state,
-        double const& random_number) const {
+        double random_number) const {
     uint64_t subunit_index = static_cast<uint64_t>(random_number / rate_);
 
     uint64_t filament_index = 0;

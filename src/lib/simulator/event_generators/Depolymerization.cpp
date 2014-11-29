@@ -17,7 +17,7 @@ FixedRateDepolymerization::rate(State const* state,
 
 StateModifications
 FixedRateDepolymerization::perform_event(State* state,
-        double const& random_number) const {
+        double random_number) const {
     uint64_t relative_index = static_cast<uint64_t>(random_number / rate_);
     auto iter = matching_filament_cache.begin();
     std::advance(iter, relative_index);

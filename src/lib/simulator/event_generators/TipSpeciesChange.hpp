@@ -11,16 +11,16 @@
 namespace simulator {
 namespace event_generators {
 
-class FixedRateTipSpeciesChange : public IEventGenerator {
+class FixedRateTipSpeciesChange {
 public:
     FixedRateTipSpeciesChange(species_t const& old_species,
             species_t const& new_species, double const& rate)
         : old_species_(old_species), new_species_(new_species), rate_(rate) {}
+    virtual ~FixedRateTipSpeciesChange() {}
 
     double rate(State const* state, StateModifications const& modifications);
 
-    StateModifications perform_event(State* state,
-            double const& random_number) const;
+    StateModifications perform_event(State* state, double random_number) const;
 
 protected:
     species_t const old_species_;

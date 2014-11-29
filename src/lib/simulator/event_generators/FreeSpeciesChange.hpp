@@ -11,7 +11,7 @@ namespace simulator {
 namespace event_generators {
 
 
-class FreeSpeciesChange : public IEventGenerator {
+class FreeSpeciesChange {
 public:
     FreeSpeciesChange(species_t const& old_species,
             std::vector<species_t> const& new_species, double const& rate)
@@ -21,8 +21,7 @@ public:
         return state->concentrations[old_species_]->value() * rate_;
     }
 
-    StateModifications perform_event(State* state,
-            double const& random_number) const {
+    StateModifications perform_event(State* state, double random_number) const {
         StateModifications m;
         m.modified_concentrations.reserve(1 + new_species_.size());
 

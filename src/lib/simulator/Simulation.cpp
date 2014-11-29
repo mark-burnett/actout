@@ -75,7 +75,7 @@ Simulation::calculate_accumulated_rates(State const* state,
 
     double accumulated_rate = 0;
     for (auto& i : event_generators_) {
-         accumulated_rate += i->rate(state, modifications);
+         accumulated_rate += i.rate(state, modifications);
          accumulated_rates.push_back(accumulated_rate);
     }
 
@@ -96,8 +96,9 @@ Simulation::perform_next_event(State* state,
         return StateModifications();
     } else {
         state->event_count++;
-        return event_generators_[std::distance(
-                accumulated_rates.cbegin(), i)]->perform_event(state, *i - r);
+        auto& eg = event_generators_[std::distance(
+                accumulated_rates.cbegin(), i)];
+        return eg.perform_event(state, *i - r);
     }
 }
 

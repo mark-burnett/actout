@@ -80,81 +80,64 @@ int main(int argc, char** argv) {
 
     // stuff passed to constructor
     std::vector<EndCondition> end_conditions;
-    std::vector<std::unique_ptr<IEventGenerator> > event_generators;
+    std::vector<EventGenerator> event_generators;
 
-    end_conditions.push_back(Duration(duration));
+    end_conditions.emplace_back(Duration(duration));
 
 
     // Random hydrolysis
-    event_generators.push_back(std::move(
-                std::unique_ptr<FilamentSpeciesChangeRandom>(
-                    new FilamentSpeciesChangeRandom(0, 1, hydrolysis_rate))));
+    event_generators.emplace_back(
+            FilamentSpeciesChangeRandom(0, 1, hydrolysis_rate));
 
     // XXX temporary random dissociation
-    event_generators.push_back(std::move(
-                std::unique_ptr<FilamentSpeciesChangeRandom>(
-                    new FilamentSpeciesChangeRandom(1, 2, dissociation_rate))));
+    event_generators.emplace_back(
+                    FilamentSpeciesChangeRandom(1, 2, dissociation_rate));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedTipSpeciesChange>(
-                    new PointedTipSpeciesChange(1, 2, p_tip_pi_dissoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedTipSpeciesChange>(
-                    new BarbedTipSpeciesChange(1, 2, b_tip_pi_dissoc_rate))));
+    event_generators.emplace_back(
+                    PointedTipSpeciesChange(1, 2, p_tip_pi_dissoc_rate));
+    event_generators.emplace_back(
+                    BarbedTipSpeciesChange(1, 2, b_tip_pi_dissoc_rate));
 
     {
         std::vector<species_t> v;
         v.reserve(2);
         v.push_back(2);
         v.push_back(3);
-        event_generators.push_back(std::move(
-                    std::unique_ptr<FreeSpeciesChange>(
-                        new FreeSpeciesChange(1, v, sol_pi_dissoc_rate))));
+        event_generators.emplace_back(
+                        FreeSpeciesChange(1, v, sol_pi_dissoc_rate));
     }
 
 
     // poly/depoly transitions
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndPolymerization>(
-                    new BarbedEndPolymerization(0, b_atp_assoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndDepolymerization>(
-                    new BarbedEndDepolymerization(0, b_atp_dissoc_rate))));
+    event_generators.emplace_back(
+                    BarbedEndPolymerization(0, b_atp_assoc_rate));
+    event_generators.emplace_back(
+                    BarbedEndDepolymerization(0, b_atp_dissoc_rate));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndPolymerization>(
-                    new BarbedEndPolymerization(1, b_adppi_assoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndDepolymerization>(
-                    new BarbedEndDepolymerization(1, b_adppi_dissoc_rate))));
+    event_generators.emplace_back(
+                    BarbedEndPolymerization(1, b_adppi_assoc_rate));
+    event_generators.emplace_back(
+                    BarbedEndDepolymerization(1, b_adppi_dissoc_rate));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndPolymerization>(
-                    new BarbedEndPolymerization(2, b_adp_assoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<BarbedEndDepolymerization>(
-                    new BarbedEndDepolymerization(2, b_adp_dissoc_rate))));
+    event_generators.emplace_back(
+                    BarbedEndPolymerization(2, b_adp_assoc_rate));
+    event_generators.emplace_back(
+                    BarbedEndDepolymerization(2, b_adp_dissoc_rate));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedEndPolymerization>(
-                    new PointedEndPolymerization(0, p_atp_assoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedEndDepolymerization>(
-                    new PointedEndDepolymerization(0, p_atp_dissoc_rate))));
+    event_generators.emplace_back(
+                    PointedEndPolymerization(0, p_atp_assoc_rate));
+    event_generators.emplace_back(
+                    PointedEndDepolymerization(0, p_atp_dissoc_rate));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedEndPolymerization>(
-                    new PointedEndPolymerization(1, p_adppi_assoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedEndDepolymerization>(
-                    new PointedEndDepolymerization(1, p_adppi_dissoc_rate))));
+    event_generators.emplace_back(
+                    PointedEndPolymerization(1, p_adppi_assoc_rate));
+    event_generators.emplace_back(
+                    PointedEndDepolymerization(1, p_adppi_dissoc_rate));
 
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedEndPolymerization>(
-                    new PointedEndPolymerization(2, p_adp_assoc_rate))));
-    event_generators.push_back(std::move(
-                std::unique_ptr<PointedEndDepolymerization>(
-                    new PointedEndDepolymerization(2, p_adp_dissoc_rate))));
+    event_generators.emplace_back(
+                    PointedEndPolymerization(2, p_adp_assoc_rate));
+    event_generators.emplace_back(
+                    PointedEndDepolymerization(2, p_adp_dissoc_rate));
 
 
     // stuff passed to execute
