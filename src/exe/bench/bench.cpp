@@ -79,11 +79,10 @@ int main(int argc, char** argv) {
             seed_concentration / fnc);
 
     // stuff passed to constructor
-    std::vector<std::unique_ptr<IEndCondition const> > end_conditions;
+    std::vector<EndCondition> end_conditions;
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
 
-    end_conditions.push_back(std::move(
-                std::unique_ptr<Duration>(new Duration(duration))));
+    end_conditions.push_back(Duration(duration));
 
 
     // Random hydrolysis

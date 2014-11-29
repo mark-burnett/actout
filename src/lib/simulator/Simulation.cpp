@@ -41,8 +41,8 @@ Simulation::execute(State* state,
         }
 
         if (0 == state->total_event_rate ||
-            std::any_of(end_conditions_.cbegin(), end_conditions_.cend(),
-                std::bind(&IEndCondition::satisfied, _1, state))) {
+            std::any_of(end_conditions_.begin(), end_conditions_.end(),
+                [state](EndCondition& ec){ return ec.satisfied(state); })) {
             break;
         }
 

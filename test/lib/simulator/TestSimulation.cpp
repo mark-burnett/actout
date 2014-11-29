@@ -61,7 +61,7 @@ struct SimpleSimulation {
         rng = std::unique_ptr<MockRNG>(new MockRNG());
     }
 
-    std::vector<std::unique_ptr<IEndCondition const> > end_conditions;
+    std::vector<EndCondition> end_conditions;
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
 
     State state;
@@ -83,9 +83,7 @@ BOOST_AUTO_TEST_CASE(get_initial_modifications) {
 
 
 BOOST_AUTO_TEST_CASE(polymerization) {
-    end_conditions.push_back(std::move(
-                std::unique_ptr<EventCount>(
-                    new EventCount(10))));
+    end_conditions.push_back(EventCount(10));
 
     event_generators.push_back(std::move(
                 std::unique_ptr<BarbedEndPolymerization>(
