@@ -1,6 +1,5 @@
 #pragma once
 
-#include "simulator/IMeasurement.hpp"
 #include "simulator/State.hpp"
 
 #include <cmath>
@@ -12,10 +11,12 @@ namespace simulator {
 namespace measurements {
 
 
-class SingleValueBase : public IMeasurement {
+class SingleValueBase {
 public:
     SingleValueBase(double const& sample_interval)
         : sample_interval_(sample_interval) {}
+
+    virtual ~SingleValueBase() {}
 
     void perform(State const* state) {
         uint64_t samples_to_record = static_cast<uint64_t>(
@@ -35,8 +36,6 @@ public:
 
 private:
     virtual double const get_value(State const* state) const = 0;
-
-public:  // XXX There should probably be a read-only accessor for this
     std::vector<double> samples;
 
 private:

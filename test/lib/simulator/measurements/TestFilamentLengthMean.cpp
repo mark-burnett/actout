@@ -37,9 +37,12 @@ BOOST_AUTO_TEST_CASE(Basic) {
 
     std::vector<double> expected_values;
     expected_values += 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15;
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-            expected_values.begin(), expected_values.end(),
-            m.samples.begin(), m.samples.end());
+    {
+        auto samples = m.get_samples();
+        BOOST_CHECK_EQUAL_COLLECTIONS(
+                expected_values.begin(), expected_values.end(),
+                samples.begin(), samples.end());
+    }
 
     for (uint64_t i = 0; i < 6; ++i) {
         s.time = 10 + i;
@@ -48,7 +51,10 @@ BOOST_AUTO_TEST_CASE(Basic) {
     }
 
     expected_values += 15, 14.5, 14, 13.5, 13;
-    BOOST_CHECK_EQUAL_COLLECTIONS(
-            expected_values.begin(), expected_values.end(),
-            m.samples.begin(), m.samples.end());
+    {
+        auto samples = m.get_samples();
+        BOOST_CHECK_EQUAL_COLLECTIONS(
+                expected_values.begin(), expected_values.end(),
+                samples.begin(), samples.end());
+    }
 }
