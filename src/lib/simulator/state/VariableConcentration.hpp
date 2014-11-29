@@ -1,7 +1,5 @@
 #pragma once
 
-#include "simulator/IConcentration.hpp"
-
 #include <inttypes.h>
 
 
@@ -9,7 +7,7 @@ namespace simulator {
 namespace state {
 
 
-class VariableConcentration : public IConcentration {
+class VariableConcentration {
 public:
     VariableConcentration(double const& concentration, double const& volume)
         : _number(volume * concentration), _volume(volume) {}

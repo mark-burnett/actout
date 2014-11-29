@@ -8,7 +8,7 @@ namespace event_generators {
 double
 FixedRatePolymerizationBase::rate(State const* state,
         StateModifications const& modifications) {
-    return rate_ * state->concentrations[species_]->value()
+    return rate_ * state->concentrations[species_].value()
         * state->filaments.size();
 }
 
@@ -17,9 +17,9 @@ StateModifications
 FixedRatePolymerizationBase::perform_event(State* state,
         double random_number) const {
     uint64_t i = random_number / (
-            rate_ * state->concentrations[species_]->value());
+            rate_ * state->concentrations[species_].value());
     append_species(state->filaments[i].get());
-    state->concentrations[species_]->remove_monomer();
+    state->concentrations[species_].remove_monomer();
 
     StateModifications modifications;
 

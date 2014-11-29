@@ -10,7 +10,7 @@
 #include <vector>
 
 
-using simulator::state::IConcentration;
+using simulator::state::Concentration;
 using simulator::state::IFilament;
 
 
@@ -28,7 +28,7 @@ public:
     SpeciesMap species_map;
 
     std::vector<std::unique_ptr<IFilament> > filaments;
-    std::vector<std::unique_ptr<IConcentration> > concentrations;
+    std::vector<Concentration> concentrations;
 };
 
 

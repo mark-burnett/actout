@@ -24,7 +24,7 @@ FixedRateDepolymerization::perform_event(State* state,
 
     pop_filament_tip(state->filaments[*iter].get());
 
-    state->concentrations[species_]->add_monomer();
+    state->concentrations[species_].add_monomer();
 
     StateModifications rv;
     rv.modified_filaments.reserve(1);

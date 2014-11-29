@@ -31,12 +31,8 @@ struct TipHydrolysisTest {
                         new state::SingleStrandFilament(3,
                             values2.begin(), values2.end()))));
 
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
 
         initial_modifications.created_filaments.reserve(2);
         initial_modifications.created_filaments.emplace_back(0);

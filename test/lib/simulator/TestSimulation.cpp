@@ -54,9 +54,7 @@ struct SimpleSimulation {
                     std::unique_ptr<SingleStrandFilament>(
                         new SingleStrandFilament(5,
                             values.begin(), values.end()))));
-        state.concentrations.push_back(std::move(
-                    std::unique_ptr<FixedConcentration>(
-                        new FixedConcentration(6))));
+        state.concentrations.emplace_back(FixedConcentration(6));
         rng = std::unique_ptr<MockRNG>(new MockRNG());
     }
 

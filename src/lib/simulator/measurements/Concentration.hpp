@@ -16,7 +16,7 @@ public:
 
 private:
     double const get_value(State const* state) const {
-        return state->concentrations[species_]->value();
+        return state->concentrations[species_].value();
     }
 
 private:

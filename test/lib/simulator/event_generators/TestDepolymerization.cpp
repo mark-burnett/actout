@@ -31,12 +31,10 @@ struct Depolymerization {
                         new state::SingleStrandFilament(3,
                             values2.begin(), values2.end()))));
 
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
+        s.concentrations.emplace_back(
+                        state::VariableConcentration(0, 1));
+        s.concentrations.emplace_back(
+                        state::VariableConcentration(0, 1));
     }
 
     ~Depolymerization() {
@@ -74,8 +72,8 @@ BOOST_AUTO_TEST_CASE(Basic) {
         BOOST_CHECK_CLOSE(2, t_b1.rate(&s, modifications), 0.00001);
         BOOST_CHECK_CLOSE(0, t_p0.rate(&s, modifications), 0.00001);
         BOOST_CHECK_CLOSE(8, t_p1.rate(&s, modifications), 0.00001);
-        BOOST_CHECK_EQUAL(1, s.concentrations[0]->monomer_count());
-        BOOST_CHECK_EQUAL(0, s.concentrations[1]->monomer_count());
+        BOOST_CHECK_EQUAL(1, s.concentrations[0].monomer_count());
+        BOOST_CHECK_EQUAL(0, s.concentrations[1].monomer_count());
     }
 
     {
@@ -86,8 +84,8 @@ BOOST_AUTO_TEST_CASE(Basic) {
         BOOST_CHECK_CLOSE(2, t_b1.rate(&s, modifications), 0.00001);
         BOOST_CHECK_CLOSE(0, t_p0.rate(&s, modifications), 0.00001);
         BOOST_CHECK_CLOSE(8, t_p1.rate(&s, modifications), 0.00001);
-        BOOST_CHECK_EQUAL(1, s.concentrations[0]->monomer_count());
-        BOOST_CHECK_EQUAL(1, s.concentrations[1]->monomer_count());
+        BOOST_CHECK_EQUAL(1, s.concentrations[0].monomer_count());
+        BOOST_CHECK_EQUAL(1, s.concentrations[1].monomer_count());
     }
 
     {
@@ -98,8 +96,8 @@ BOOST_AUTO_TEST_CASE(Basic) {
         BOOST_CHECK_CLOSE(2, t_b1.rate(&s, modifications), 0.00001);
         BOOST_CHECK_CLOSE(0, t_p0.rate(&s, modifications), 0.00001);
         BOOST_CHECK_CLOSE(4, t_p1.rate(&s, modifications), 0.00001);
-        BOOST_CHECK_EQUAL(1, s.concentrations[0]->monomer_count());
-        BOOST_CHECK_EQUAL(2, s.concentrations[1]->monomer_count());
+        BOOST_CHECK_EQUAL(1, s.concentrations[0].monomer_count());
+        BOOST_CHECK_EQUAL(2, s.concentrations[1].monomer_count());
     }
 }
 

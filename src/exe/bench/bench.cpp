@@ -71,7 +71,6 @@ using namespace end_conditions;
 using namespace event_generators;
 using namespace measurements;
 using namespace rng;
-using namespace state;
 
 int main(int argc, char** argv) {
     double const volume = number_of_filaments / fnc;
@@ -149,32 +148,24 @@ int main(int argc, char** argv) {
     // setup state
     for (uint64_t i = 0; i < number_of_filaments; ++i) {
         state.filaments.push_back(std::move(
-                    std::unique_ptr<SingleStrandFilament>(
-                        new SingleStrandFilament(
+                    std::unique_ptr<state::SingleStrandFilament>(
+                        new state::SingleStrandFilament(
                             4, initial_filament_length, 2))));
     }
 
     // 0 == ATP
-    state.concentrations.push_back(std::move(
-                    std::unique_ptr<VariableConcentration>(
-                        new VariableConcentration(
-                            initial_concentration, volume))));
+    state.concentrations.emplace_back(state::VariableConcentration(
+                            initial_concentration, volume));
     // 1 == ADP-Pi
-    state.concentrations.push_back(std::move(
-                    std::unique_ptr<VariableConcentration>(
-                        new VariableConcentration(0, volume))));
+    state.concentrations.emplace_back(state::VariableConcentration(0, volume));
     // 2 == ADP
-    state.concentrations.push_back(std::move(
-                    std::unique_ptr<VariableConcentration>(
-                        new VariableConcentration(0, volume))));
+    state.concentrations.emplace_back(state::VariableConcentration(0, volume));
     // 3 == Pi
-    state.concentrations.push_back(std::move(
-                    std::unique_ptr<VariableConcentration>(
-                        new VariableConcentration(0, volume))));
+    state.concentrations.emplace_back(state::VariableConcentration(0, volume));
 
     measurements.emplace_back(FilamentLengthMean(sample_period));
     // Pi concentration
-    measurements.emplace_back(Concentration(sample_period, 3));
+    measurements.emplace_back(measurements::Concentration(sample_period, 3));
 
     Simulation simulation(end_conditions, event_generators);
     simulation.execute(&state, measurements, &rng);

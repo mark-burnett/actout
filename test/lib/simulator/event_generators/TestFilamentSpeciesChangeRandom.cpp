@@ -32,18 +32,10 @@ struct TestFilamentSpeciesChangeRandom {
                         new state::SingleStrandFilament(5,
                             values2.begin(), values2.end()))));
 
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
     }
 
     ~TestFilamentSpeciesChangeRandom() {

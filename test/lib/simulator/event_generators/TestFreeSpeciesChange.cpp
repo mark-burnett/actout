@@ -17,15 +17,9 @@ using namespace simulator;
 
 struct TestFreeSpeciesChange {
     TestFreeSpeciesChange() {
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(6, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
-        s.concentrations.push_back(std::move(
-                    std::unique_ptr<state::VariableConcentration>(
-                        new state::VariableConcentration(0, 1))));
+        s.concentrations.emplace_back(state::VariableConcentration(6, 1));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
+        s.concentrations.emplace_back(state::VariableConcentration(0, 1));
     }
 
     ~TestFreeSpeciesChange() {

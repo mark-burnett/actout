@@ -1,7 +1,5 @@
 #pragma once
 
-#include "simulator/IConcentration.hpp"
-
 #include <inttypes.h>
 
 
@@ -9,7 +7,7 @@ namespace simulator {
 namespace state {
 
 
-class FixedConcentration : public IConcentration {
+class FixedConcentration {
 public:
     FixedConcentration(double new_value) : _value(new_value) {}
 
