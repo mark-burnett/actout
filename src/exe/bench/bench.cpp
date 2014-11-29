@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
 
     // stuff passed to execute
     State state;
-    std::vector<std::unique_ptr<IMeasurement> > measurements;
+    std::vector<Measurement> measurements;
     MersenneTwister rng;
 
 
@@ -190,13 +190,9 @@ int main(int argc, char** argv) {
                     std::unique_ptr<VariableConcentration>(
                         new VariableConcentration(0, volume))));
 
-    measurements.push_back(std::move(
-                std::unique_ptr<FilamentLengthMean>(
-                    new FilamentLengthMean(sample_period))));
+    measurements.emplace_back(FilamentLengthMean(sample_period));
     // Pi concentration
-    measurements.push_back(std::move(
-                std::unique_ptr<Concentration>(
-                    new Concentration(sample_period, 3))));
+    measurements.emplace_back(Concentration(sample_period, 3));
 
     Simulation simulation(end_conditions, event_generators);
     simulation.execute(&state, measurements, &rng);

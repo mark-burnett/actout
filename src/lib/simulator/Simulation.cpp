@@ -14,7 +14,7 @@ namespace simulator {
 
 void
 Simulation::execute(State* state,
-        std::vector<std::unique_ptr<IMeasurement> >& measurements, IRNG* rng) {
+        std::vector<Measurement>& measurements, IRNG* rng) {
     StateModifications modifications;
 
     modifications = get_initial_modifications(state);
@@ -37,7 +37,7 @@ Simulation::execute(State* state,
         state->time += rng->exponential(state->total_event_rate);
 
         for (auto& m : measurements) {
-            m->perform(state);
+            m.perform(state);
         }
 
         if (0 == state->total_event_rate ||

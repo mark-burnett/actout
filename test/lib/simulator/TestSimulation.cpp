@@ -65,7 +65,7 @@ struct SimpleSimulation {
     std::vector<std::unique_ptr<IEventGenerator> > event_generators;
 
     State state;
-    std::vector<std::unique_ptr<IMeasurement> > measurements;
+    std::vector<Measurement> measurements;
     std::unique_ptr<IRNG> rng;
 
     std::unique_ptr<Simulation> simulation;

@@ -24,7 +24,7 @@ public:
         event_generators_(event_generators) {};
 
     void execute(State* state,
-            std::vector<std::unique_ptr<IMeasurement> >& measurements,
+            std::vector<Measurement>& measurements,
             IRNG* rng);
 
     StateModifications get_initial_modifications(State const* state) const;

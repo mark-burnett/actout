@@ -29,6 +29,10 @@ public:
         }
     }
 
+    std::vector<double> get_samples() const {
+        return samples;
+    }
+
 private:
     virtual double const get_value(State const* state) const = 0;
 
